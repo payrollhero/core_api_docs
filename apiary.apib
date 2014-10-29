@@ -144,14 +144,14 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
@@ -167,8 +167,24 @@ Returns a list of day schedules.
 
 #### Important Notes
 
-The permissions information is not included by default. To activate it pass `permissions=true`
+##### Permission information
+
+Keys: `in_early`, `in_late`, `out_early`, `out_late` are boolean, and denote the threshold permiossions
+for being able to cross that threshold.
+
+Keys: `earliest_in`, `earliest_out`, `latest_in`, `latest_out` are unix timestamps are they represent
+the threshold value for their corresponding check.
+
+All of these keys are optional, they will not show unless passing `permissions=true`
+
+##### Breaks
+
 The `breaks` key in the response is off by default. To activate it pass `breaks=true`
+
+##### Changer
+
+The changer information `changer_id`, `changer_photo`, `changed_at` can be nil, when its present it denotes
+information about who changed this schedule and a photo of them when they changed it.
 
 + Parameters
     + token (string, required) ... Authentication Token
@@ -194,7 +210,6 @@ The `breaks` key in the response is off by default. To activate it pass `breaks=
                     "worksite_id": 5,
                     "start_time": 1390840620,
                     "end_time": 1390876620,
-                    // breaks only show when `breaks` is true
                     "breaks": [
                       {
                         "kind": "unpaid_break",
@@ -202,7 +217,6 @@ The `breaks` key in the response is off by default. To activate it pass `breaks=
                         "end_time": 1390858620
                       }
                     ],
-                    // the below only show when `permissions` is true
                     "in_early": true,
                     "in_late": true,
                     "out_early": true,
@@ -226,14 +240,14 @@ The `breaks` key in the response is off by default. To activate it pass `breaks=
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
@@ -287,7 +301,7 @@ Returns a list of attendance days.
     + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
     + start_date (date[format="YYYY-MM-DD"], required) ... Specifies a start date to query schedules for.
     + end_date (date[format="YYYY-MM-DD"], required) ... Specifies an end date to query schedules for.
-    + employee_id (integer, optional) ... Employee ID to limit this query to 
+    + employee_id (integer, optional) ... Employee ID to limit this query to
 
 + Response 200 (application/json)
 
@@ -337,14 +351,14 @@ Returns a list of attendance days.
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
@@ -377,19 +391,19 @@ Any consumer of this endpoint is guaranteed to receive 3 different background im
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
         the user is recognized but has no valid permission
-        
+
 ## Worksites Collection [/api/v2/worksites{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
 
 section 1
@@ -420,14 +434,14 @@ Returns a collection of the worksites for the given account.
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
