@@ -158,7 +158,9 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
 + Response 403
 
         the user is recognized but has no valid permission
-        
+
+# Group Schedules
+
 ## DaySchedules Collection [/api/v3/day_schedules{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,worksite_id,start_date,end_date,permissions,breaks}]
 
 section 1
@@ -240,6 +242,8 @@ The `breaks` key in the response is off by default. To activate it pass `breaks=
 + Response 403
 
         the user is recognized but has no valid permission
+
+# Group Attendance
 
 ## AttendanceDays Collection [/api/v3/attendance_days{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,start_date,end_date,employee_id}]
 
@@ -349,7 +353,9 @@ Returns a list of attendance days.
 + Response 403
 
         the user is recognized but has no valid permission
-        
+
+# Group Backgrounds
+
 ## PhotoWall Backgrounds Collection [/api/v2/backgrounds{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
 
 section 1
@@ -401,20 +407,20 @@ Returns a collection of the worksites for the given account.
 
 + Response 200 (application/json)
 
-  {
-    worksites: [
-      {
-        id: 1,
-        name: "Some Place",
-        address: "123 some place",
-        latitude: 134.2333,
-        longitude: 134.2333,
-        time_zone: "America/Vancouver",
-        proximity_radius: 200,
-        account_id: 1,
-      }
-    ]
-  }
+        {
+            worksites: [
+              {
+                id: 1,
+                name: "Some Place",
+                address: "123 some place",
+                latitude: 134.2333,
+                longitude: 134.2333,
+                time_zone: "America/Vancouver",
+                proximity_radius: 200,
+                account_id: 1,
+              }
+            ]
+        }
 
 + Response 400
 
