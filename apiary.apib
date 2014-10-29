@@ -26,6 +26,10 @@ OAUTH2 authentication process against https://auth.payrollhero.com.
     + oauth_signature_method (string) ... The oauth signature method used. Currently only supports 'rsa-sha256'.
     + oauth_timestamp (unix_timestamp) ... The timestamp for this request in seconds epoch.
 
+## Common Parameters
+
+  n/a
+
 # Group Clocking Logic
 
 ## What is this section?
@@ -80,9 +84,9 @@ the ui should not allow them to clock in.
 
 # Group Employees
 
-### Common Parameters
 
-#### Statistical Parameters
+#### Statistical Parameters (Parameters used to track API usage.)
+
         + device_platform (string) ... Current device platform (ie: iPhone4,1 , iPad3,2)
         + version (string) ... Current application version
         + app_name (string) ... The current app's bundle identifier (eg: com.Payrollhero.TeamClock)
@@ -100,8 +104,6 @@ the ui should not allow them to clock in.
         X-App-Version: Current application version
 
 ## Employees Collection [/api/v3/employees{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,device_platform,version,app_name,connection_type,unique_identifier,attempt_number,page,per_page,with_subordinate_eids}]
-
-Collection Description
 
 ### List all Employees [GET]
 
