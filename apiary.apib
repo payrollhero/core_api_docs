@@ -1,0 +1,387 @@
+FORMAT: 1A
+HOST: https://api.payrollhero.com
+
+# PayrollHero Core API
+
+# Group Authentication
+
+Authentication to the Core API is done through Payrollhero Auth
+
+## Token Based Authentication
+
+Authentication can be done with the use of a token. The token can be obtained by doing a 2 or 3 legged
+OAUTH2 authentication process against https://auth.payrollhero.com.
+
+#### Parameters
+
+    + token (string, optional) ... OAuth Token from auth.payrollhero.com
+
+## Signature Based Authentication
+
+#### Parameters
+
+    + oauth_signature (string, optional) ... Base64 encoded oauth signature string
+    + oauth_key_id (string) ... Key identifier for the public key for this signature string
+    + oauth_nonce (string) ... Nonce used for this signature
+    + oauth_signature_method (string) ... The oauth signature method used. Currently only supports 'rsa-sha256'.
+    + oauth_timestamp (unix_timestamp) ... The timestamp for this request in seconds epoch.
+
+# Group Clocking Logic
+
+## What is this section?
+
+This section is meant to document a bunch of logic around clocking. Specifically for custom Time Clock implementations.
+
+## Summary
+
+The idea is as follows:
+
+There is 3 states `active`, `current` and `unscheduled`
+
+### But first .. 'likely' clock out time
+
+Is a concept of what is the employee's likely clock out time.
+
+In the case when the employee has a schedule, it will be their actual scheduled clock out time.
+
+In the case when they do not, it will be the time they clocked out plus their usual shift length (8 hours normally)
+
+### Active
+
+If an employee is:
++ currently already clocked in
++ not clocked out
++ can be on break or not
++ not later than 10 hours past their likely clock out time
++ not outside of their early/late thresholds for clocking out (separate section will explain thresholds)
+
+### Current
+
+If an employee is:
++ not currently clocked in
++ they are no more than 10 hours away from the start of their shift (early or late)
++ not outside their early/late in thresholds
+
+### Unscheduled
+
+If an employee is:
++ allowed to clock unscheduled
+
+### Thresholds
+
+There is thresholds for `clocking in` and `clocking out`. And there is separate variants for being `early` or `late` for each.
+
+There is also a boolean flag if an employee is allowed to cross each of there thresholds.
+
+The threshold check is meant to allow fine tuned control of when an employee sees themselves on the Time Clock.
+
+This way if an employee is early by 30 minutes, and their `early in` threshold is 15 minutes, and they're not allowed to cross it
+the ui should not allow them to clock in.
+
+# Group Employees
+
+### Common Parameters
+
+#### Statistical Parameters
+        + device_platform (string) ... Current device platform (ie: iPhone4,1 , iPad3,2)
+        + version (string) ... Current application version
+        + app_name (string) ... The current app's bundle identifier (eg: com.Payrollhero.TeamClock)
+        + connection_type (string) ... How app is currently connect (ie: WiFi, 3G)
+        + unique_identifier (string) ... Device's uuid
+        + attempt_number (number) ... Number of times request has been retried
+
+#### Statistical Headers (can be used instead of the statistical parameters)
+
+        X-App-Platform: Current device platform (ie: iPhone4,1 , iPad3,2)
+        X-App-Attempt-Number: Number of times request has been retried
+        X-App-UID: Device's uuid
+        X-App-Connection-Type: How app is currently connect (ie: WiFi, 3G)
+        X-App-Name: The current app's bundle identifier
+        X-App-Version: Current application version
+
+## Employees Collection [/api/v3/employees{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,device_platform,version,app_name,connection_type,unique_identifier,attempt_number,page,per_page,with_subordinate_eids}]
+
+Collection Description
+
+### List all Employees [GET]
+
+Returns a list of employees.
+
+#### Important Notes
+
+The `subordinate_eids` key in the response is off by default. To activate it pass `with_subordinate_eids=true`
+
++ Parameters
+    + token = `enter_a_token` (string, optional) ... Authentication Token
+    + page = `1` (number, optional) ... Current page being requested
+    + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
+    + with_subordinate_eids = `false` (boolean, optional) ... Set to true to return an array of each employee's subordinates' account_specific_id
+
++ Response 200 (application/json)
+
+        {
+            "employees": [
+            {
+              "id": 4111,
+              "account_id": 411,
+              "firstname": "Michael",
+              "lastname": "Stephenson",
+              "gender": "male",
+              "timezone": "Hong Kong",
+              "clock_on_non_work_days": false,
+              "avatar": {
+                "profile": "https://s3.amazonaws.com/files2.payrollhero.com/production/employees/4111/avatars/profile/27665c39818fc4684334f5ce33a4a2f9?1351665729"
+              },
+              "subordinate_eids": [
+                "36",
+                "10",
+                "59",
+                "97"
+              ]
+            }
+          ]
+        }
+
++ Response 400
+
+        request parameters are not valid 
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }    
+
++ Response 403
+
+        the user is recognized but has no valid permission
+        
+## DaySchedules Collection [/api/v3/day_schedules{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,worksite_id,start_date,end_date,permissions,breaks}]
+
+section 1
+
+### List all DaySchedules [GET]
+
+Returns a list of day schedules.
+
+#### Important Notes
+
+The permissions information is not included by default. To activate it pass `permissions=true`
+The `breaks` key in the response is off by default. To activate it pass `breaks=true`
+
++ Parameters
+    + token (string, required) ... Authentication Token
+    + page = `1` (number, optional) ... Current page being requested
+    + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
+    + start_date (date[format="YYYY-MM-DD"], required) ... Specifies a start date to query schedules for.
+    + end_date (date[format="YYYY-MM-DD"], required) ... Specifies an end date to query schedules for.
+    + permissions = `false` (boolean, optional) ... Whether to return permissions information with the schedule.
+    + breaks = `false` (boolean, optional) ... Whether to return schedules breaks in the information.
+    + worksite_id (integer, optional) ... Specifies a worksite_id to filter these schedules by.
+
++ Response 200 (application/json)
+
+        {
+            "day_schedules": [
+              {
+                "uid": "34373a323031332d31312d3231",
+                "employee_id": 123,
+                "day": "2014-05-04",
+                "paid": false,
+                "shifts": [
+                  {
+                    "worksite_id": 5,
+                    "start_time": 1390840620,
+                    "end_time": 1390876620,
+                    // breaks only show when `breaks` is true
+                    "breaks": [
+                      {
+                        "kind": "unpaid_break",
+                        "start_time": 1390855020,
+                        "end_time": 1390858620
+                      }
+                    ],
+                    // the below only show when `permissions` is true
+                    "in_early": true,
+                    "in_late": true,
+                    "out_early": true,
+                    "out_late": true,
+                    "earliest_in": 1390841520,
+                    "earliest_out": 1390839720,
+                    "latest_in": 1390875720,
+                    "latest_out": 1390877520
+                  }
+                ],
+                "changer_id": 123,
+                "changer_photo": "https://s3.payrollhero.com/manager-photo.jpeg",
+                "changed_at": 1390877520
+              }
+            ],
+            "per_page": 25,
+            "page": 1,
+            "total_pages": 1
+          }
+        }
+
++ Response 400
+
+        request parameters are not valid 
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }    
+
++ Response 403
+
+        the user is recognized but has no valid permission
+
+## AttendanceDays Collection [/api/v3/attendance_days{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,start_date,end_date,employee_id}]
+
+section 1
+
+### List all Attendance Days [GET]
+
+Returns a list of attendance days.
+
+#### Possible `review_category` values:
+
++ `misassociated`
++ `missing_in`
++ `duplicate_clock_in`
++ `missing_out`
++ `duplicate_clock_out`
++ `in_late`
++ `out_early`
++ `in_early`
++ `out_late`
++ `overtime`
++ `undertime`
++ `perfect`
++ `sent_to_payroll`
++ `publishing_to_payroll`
++ `published_to_payroll`
+
+#### Possible `status` values:
+
++ `not_clocked_in`
++ `clocked_in`
++ `on_break`
++ `clocked_out`
+
+#### Possible `kind` values:
+
++ `clock_in`
++ `clock_out`
++ `break_in`
++ `break_out`
+
++ Parameters
+    + token (string, required) ... Authentication Token
+    + page = `1` (number, optional) ... Current page being requested
+    + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
+    + start_date (date[format="YYYY-MM-DD"], required) ... Specifies a start date to query schedules for.
+    + end_date (date[format="YYYY-MM-DD"], required) ... Specifies an end date to query schedules for.
+    + employee_id (integer, optional) ... Employee ID to limit this query to 
+
++ Response 200 (application/json)
+
+        {
+            attendance_days: [
+              {
+                date: "2014-01-01",
+                employee_id: 123,
+                uid: "323031342d30312d30313a313233",
+                shifts: [
+                  {
+                    review_category: "perfect",
+                    unscheduled: true,
+                    status: "clocked_out",
+                    clock_in: {
+                      kind: "clock_in",
+                      time: 123456,
+                      photo_url: "http://...",
+                      worksite_id: 5
+                    },
+                    clock_out: {
+                      kind: "clock_out",
+                      time: 123456,
+                      photo_url: "http://...",
+                      worksite_id: 5,
+                    },
+                    breaks: [
+                      {
+                        kind: "break_in",
+                        time: 1234234
+                      }
+                    ],
+                    resolved_in: {
+                      time: 1409965340
+                    },
+                    resolved_out: {
+                      time: 2306561220
+                    }
+                  }
+                ]
+              }
+            ],
+            per_page: 25,
+            page: 1,
+            total_pages: 1
+        }
+
++ Response 400
+
+        request parameters are not valid 
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }    
+
++ Response 403
+
+        the user is recognized but has no valid permission
+        
+## PhotoWall Backgrounds Collection [/api/v2/backgrounds{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
+
+section 1
+
+### List all processed photo wall backgrounds [GET]
+
+Returns a collection keyed with information about generated backgrounds containing employee photos.  Two orientations for the photos
+are returned.  The 'horizontal' is more appropriate for display when the width is greater than the height of the viewport
+and the 'vertical' is more appropriate when the height is greater than the width.  This endpoint will return new photo walls occasionally.
+Any consumer of this endpoint is guaranteed to receive 3 different background images per day.
+
++ Parameters
+    + token (string, required) ... Authentication Token
+
++ Response 200 (application/json)
+
+        {
+            backgrounds: {
+              horizontal: 'https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/121/images/original/team_clock_bg.jpg20140128-13912-17heex1?1390944942',
+              vertical: 'https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/122/images/original/team_clock_bg.jpg20140128-13912-1m68r5i?1390944969',
+            }
+        }
+
++ Response 400
+
+        request parameters are not valid 
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }    
+
++ Response 403
+
+        the user is recognized but has no valid permission
