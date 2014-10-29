@@ -496,3 +496,74 @@ Returns the server's current time as a unix timestamp.
         {
           "server_time": 1394239827
         }
+
+# Group Time App
+
+Time is a separate service of PayrollHero. Requests against time should be made against https://time.payrollhero.com.
+
+The same authentication token is required to use these endpoint.
+
+## Clockings [/api/v2/clockings{?token}]
+
+**Clocking Kinds**
+
+ + `clock_in` ... the employee is clocking in
+ + `clock_out` ... the employee is clocking out
+ + `break_in` ... the employee is going on break
+ + `break_out` ... the employee is leaving break
+
+**Clocking Object Param**
+
+ + `employee_id` (number, required) ... The employee's id number as gotten from the employees endpoint
+ + `kind` (enum, required) ... What kind of clocking is this? (see above)
+ + `client_time` (number, required) ... Unix timestamp of when the employee performed this clocking
+ + `latitude` (float, optional) ... Latitude where this clocking happened
+ + `longitude` (float, optional) ... Longitude where this clocking happened
+ + `worksite_id` (number, optional) ... the id of the worksite this clocking should be tagged with
+ + `reason` (text, optional) ... a reason the employee entered as to why they were early/late etc
+ + `photo` (file or url, optional) ... a multi part file attachment or a url to an image with the employee's selfie (this one should be clear of any props)
+ + `propped_photo` (file or url, optional) ... a multi part file attachment or a url to an image with the employee's selfie including props, only include if using props
+
+### Create Clocking [POST]
+
+** Scope Required: ** `write_clockings`
+
+This endpoint will accept duplicated clockings, but it will return a status of `created` or `duplicate` depending
+if a duplicate is detected. (see the two sample responses)
+
++ Parameters
+  + token (string, required) ... Authentication Token
+  + clocking (object) ... The clocking data object, see above for details
+
++ Request (application/json)
+
+        {
+          "clocking": {
+            "employee_id": "1",
+            "kind": "clock_in",
+            "client_time": "1395106884",
+            "latitude": "-98.1234",
+            "longitude": "165.4321",
+            "ip_address": "174.7.251.60",
+            "worksite_id": "100"
+          }
+        }
+
++ Response 200 (application/json)
+
+        {
+          "clocking": {
+            "id": 123
+          },
+          "status": "duplicate"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "clocking": {
+            "id": 123
+          },
+          "status": "created"
+        }
+
