@@ -484,6 +484,46 @@ Any consumer of this endpoint is guaranteed to receive 3 different background im
 
         the user is recognized but has no valid permission
 
+# Group Break Screens
+
+Break screens encapsulate the images and text used to render the page displayed to an employee who is currently on break. It is recommended
+that these details only be fetched on initialization of a client application and then cached as they do not need to be kept up to date.
+
+## Break Screen Details [/api/v2/break_screen{?token}]
+
+### Display a single break screen [GET]
+
++ Parameters
+    + token (string, required) ... Authentication Token
+
++ Response 200 (application/json)
+
+        {
+          'break_screen': {
+            'header': 'Lorem Ipsum',
+            'title': 'Lorem ipsum dolor sit amet',
+            'body': 'Lorem ipsum dolor sit amet',
+            'corner_image': 'https://api.payrollhero.com/assets/timeclock-startbreak.png',
+            'image': 'https://api.payrollhero.com/assets/coffee-cup.png'
+          }
+        }
+
++ Response 400
+
+        request parameters are not valid
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }
+
++ Response 403
+
+        the user is recognized but has no valid permission
+
+
 # Group Worksites
 
 ## Worksites Collection [/api/v2/worksites{?token,page,per_page}]
