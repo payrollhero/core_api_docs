@@ -114,7 +114,7 @@ Returns a list of employees.
 The `subordinate_eids` key in the response is off by default. To activate it pass `with_subordinate_eids=true`
 
 + Parameters
-    + token = `enter_a_token` (string, optional) ... Authentication Token
+    + token (string, required) ... Authentication Token
     + page = `1` (number, optional) ... Current page being requested
     + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
     + with_subordinate_eids = `false` (boolean, optional) ... Set to true to return an array of each employee's subordinates' account_specific_id
@@ -124,10 +124,10 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
         {
             "employees": [
             {
-              "id": 4111,
-              "account_id": 411,
-              "firstname": "Michael",
-              "lastname": "Stephenson",
+              "id": 1,
+              "account_id": 1,
+              "firstname": "John",
+              "lastname": "Doe",
               "gender": "male",
               "timezone": "Hong Kong",
               "clock_on_non_work_days": false,
@@ -158,6 +158,49 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
 + Response 403
 
         the user is recognized but has no valid permission
+
+## Employee Detail [/api/v3/employees/{id}{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,device_platform,version,app_name,connection_type,unique_identifier,attempt_number,page,per_page,with_subordinate_eids}]
+
+### Show a single Employee [GET]
+
+Return the attributes of a single employee.
+
++ Parameters
+    + token (string, required) ... Authentication Token
+    + id (number, required) ... ID of employee to be fetched
+
++ Response 200 (application/json)
+
+        {
+          'employee': {
+            'id': 1,
+            'account_id': 1,
+            'firstname': 'John',
+            'lastname': 'Doe',
+            'gender': 'male',
+             "timezone": "Hong Kong",
+             "clock_on_non_work_days": false,
+             "avatar": {
+               "profile": "https://s3.amazonaws.com/files2.payrollhero.com/production/employees/4111/avatars/profile/27665c39818fc4684334f5ce33a4a2f9?1351665729"
+             }
+          }
+        }
+
++ Response 400
+
+        request parameters are not valid 
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }    
+
++ Response 403
+
+        the user is recognized but has no valid permission
+
 
 # Group Schedules
 
