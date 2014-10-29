@@ -590,14 +590,14 @@ The same authentication token is required to use these endpoint.
 
 ## Clockings [/api/v2/clockings{?token}]
 
-**Clocking Kinds**
+__Clocking Kinds__
 
  + `clock_in` ... the employee is clocking in
  + `clock_out` ... the employee is clocking out
  + `break_in` ... the employee is going on break
  + `break_out` ... the employee is leaving break
 
-**Clocking Object Param**
+__Clocking Object Param__
 
  + `employee_id` (number, required) ... The employee's id number as gotten from the employees endpoint
  + `kind` (enum, required) ... What kind of clocking is this? (see above)
