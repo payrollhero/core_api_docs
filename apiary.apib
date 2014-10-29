@@ -38,7 +38,7 @@ This section is meant to document a bunch of logic around clocking. Specifically
 
 The idea is as follows:
 
-There is 3 states `active`, `current` and `unscheduled`
+There is 3 states `open`, `closest` and `unscheduled`
 
 ### But first .. 'likely' clock out time
 
@@ -48,7 +48,7 @@ In the case when the employee has a schedule, it will be their actual scheduled 
 
 In the case when they do not, it will be the time they clocked out plus their usual shift length (8 hours normally)
 
-### Active
+### Open
 
 If an employee is:
 + currently already clocked in
@@ -57,7 +57,7 @@ If an employee is:
 + not later than 10 hours past their likely clock out time
 + not outside of their early/late thresholds for clocking out (separate section will explain thresholds)
 
-### Current
+### Closest
 
 If an employee is:
 + not currently clocked in
