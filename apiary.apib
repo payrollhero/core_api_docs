@@ -187,14 +187,14 @@ Return the attributes of a single employee.
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
@@ -203,6 +203,8 @@ Return the attributes of a single employee.
 ## DaySchedules Collection [/api/v3/day_schedules{?token,page,per_page,worksite_id,start_date,end_date,permissions,breaks}]
 
 ### List all DaySchedules [GET]
+
+__Scope Required:__ `read_schedules`
 
 Returns a list of day schedules.
 
@@ -298,6 +300,8 @@ information about who changed this schedule and a photo of them when they change
 
 ### Get Current Account [GET]
 
+__Scope Required:__ `read_account`
+
 Returns the current account the passed in token belongs to.
 
 The `active_employee_count` can be used to smartly set up paging for retrieving all the employees/schedules in the other apis.
@@ -333,6 +337,8 @@ The `active_employee_count` can be used to smartly set up paging for retrieving 
 ## AttendanceDays Collection [/api/v3/attendance_days{?token,page,per_page,start_date,end_date,employee_id}]
 
 ### List all Attendance Days [GET]
+
+__Scope Required:__ `read_attendances`
 
 Returns a list of attendance days.
 
@@ -441,6 +447,8 @@ Returns a list of attendance days.
 
 ### List all processed photo wall backgrounds [GET]
 
+__Scope Required:__ `read_backgrounds`
+
 Returns a collection keyed with information about generated backgrounds containing employee photos.  Two orientations for the photos
 are returned.  The 'horizontal' is more appropriate for display when the width is greater than the height of the viewport
 and the 'vertical' is more appropriate when the height is greater than the width.  This endpoint will return new photo walls occasionally.
@@ -515,6 +523,8 @@ that these details only be fetched on initialization of a client application and
 
 ### List all worksites [GET]
 
+__Scope Required:__ `read_worksites`
+
 Returns a collection of the worksites for the given account.
 
 + Parameters
@@ -557,6 +567,10 @@ Returns a collection of the worksites for the given account.
 ## Server Time [/api/v2/server_time]
 
 ### Get Current Server Time [GET]
+
+__Scope Required:__ none
+
+This endpoint is also the only one that does not require any authentication.
 
 Returns the server's current time as a unix timestamp.
 
