@@ -483,3 +483,17 @@ Returns a collection of the worksites for the given account.
 + Response 403
 
         the user is recognized but has no valid permission
+
+# Group Server Time
+
+## Server Time [/api/v2/server_time]
+
+### Get Current Server Time [GET]
+
+Returns the server's current time as a unix timestamp.
+
++ Response 200 (application/json)
+
+        {
+          "server_time": 1394239827
+        }
