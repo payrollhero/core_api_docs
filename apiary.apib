@@ -387,3 +387,46 @@ Any consumer of this endpoint is guaranteed to receive 3 different background im
 + Response 403
 
         the user is recognized but has no valid permission
+        
+## Worksites Collection [/api/v2/worksites{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
+
+section 1
+
+### List all worksites [GET]
+
+Returns a collection of the worksites for the given account.
+
++ Parameters
+    + token (string, required) ... Authentication Token
+
++ Response 200 (application/json)
+
+  {
+    worksites: [
+      {
+        id: 1,
+        name: "Some Place",
+        address: "123 some place",
+        latitude: 134.2333,
+        longitude: 134.2333,
+        time_zone: "America/Vancouver",
+        proximity_radius: 200,
+        account_id: 1,
+      }
+    ]
+  }
+
++ Response 400
+
+        request parameters are not valid 
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }    
+
++ Response 403
+
+        the user is recognized but has no valid permission
