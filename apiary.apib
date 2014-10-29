@@ -405,8 +405,6 @@ Returns a list of attendance days.
 
 ## PhotoWall Backgrounds Collection [/api/v2/backgrounds{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
 
-section 1
-
 ### List all processed photo wall backgrounds [GET]
 
 Returns a collection keyed with information about generated backgrounds containing employee photos.  Two orientations for the photos
@@ -420,10 +418,10 @@ Any consumer of this endpoint is guaranteed to receive 3 different background im
 + Response 200 (application/json)
 
         {
-            backgrounds: {
-              horizontal: 'https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/121/images/original/team_clock_bg.jpg20140128-13912-17heex1?1390944942',
-              vertical: 'https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/122/images/original/team_clock_bg.jpg20140128-13912-1m68r5i?1390944969',
-            }
+          "backgrounds": {
+            "horizontal": "https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/121/images/original/team_clock_bg.jpg20140128-13912-17heex1?1390944942",
+            "vertical": "https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/122/images/original/team_clock_bg.jpg20140128-13912-1m68r5i?1390944969"
+          }
         }
 
 + Response 400
