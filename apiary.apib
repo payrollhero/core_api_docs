@@ -78,8 +78,7 @@ The threshold check is meant to allow fine tuned control of when an employee see
 This way if an employee is early by 30 minutes, and their `early in` threshold is 15 minutes, and they're not allowed to cross it
 the ui should not allow them to clock in.
 
-# Group Employees
-
+# Group Common Parameters / Headers
 
 #### Statistical Parameters (Parameters used to track API usage.)
 
@@ -98,6 +97,10 @@ the ui should not allow them to clock in.
         X-App-Connection-Type: How app is currently connect (ie: WiFi, 3G)
         X-App-Name: The current app's bundle identifier
         X-App-Version: Current application version
+
+# Group Core App
+
+Core is the main service of PayrollHero. Requests against time should be made against https://api.payrollhero.com.
 
 ## Employees Collection [/api/v3/employees{?token,page,per_page,with_subordinate_eids}]
 
@@ -197,9 +200,6 @@ Return the attributes of a single employee.
 
         the user is recognized but has no valid permission
 
-
-# Group Schedules
-
 ## DaySchedules Collection [/api/v3/day_schedules{?token,page,per_page,worksite_id,start_date,end_date,permissions,breaks}]
 
 ### List all DaySchedules [GET]
@@ -294,8 +294,6 @@ information about who changed this schedule and a photo of them when they change
 
         the user is recognized but has no valid permission
 
-# Group Account
-
 ## Account [/api/v2/account{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
 
 ### Get Current Account [GET]
@@ -331,9 +329,6 @@ The `active_employee_count` can be used to smartly set up paging for retrieving 
 + Response 403
 
         the user is recognized but has no valid permission
-
-
-# Group Attendance
 
 ## AttendanceDays Collection [/api/v3/attendance_days{?token,page,per_page,start_date,end_date,employee_id}]
 
@@ -442,8 +437,6 @@ Returns a list of attendance days.
 
         the user is recognized but has no valid permission
 
-# Group Backgrounds
-
 ## PhotoWall Backgrounds Collection [/api/v2/backgrounds{?token}]
 
 ### List all processed photo wall backgrounds [GET]
@@ -480,12 +473,10 @@ Any consumer of this endpoint is guaranteed to receive 3 different background im
 
         the user is recognized but has no valid permission
 
-# Group Break Screens
+## Break Screen Details [/api/v2/break_screen{?token}]
 
 Break screens encapsulate the images and text used to render the page displayed to an employee who is currently on break. It is recommended
 that these details only be fetched on initialization of a client application and then cached as they do not need to be kept up to date.
-
-## Break Screen Details [/api/v2/break_screen{?token}]
 
 ### Display a single break screen [GET]
 
@@ -520,7 +511,6 @@ that these details only be fetched on initialization of a client application and
         the user is recognized but has no valid permission
 
 
-# Group Worksites
 ## Worksites Collection [/api/v2/worksites{?token,page,per_page}]
 
 ### List all worksites [GET]
@@ -563,8 +553,6 @@ Returns a collection of the worksites for the given account.
 + Response 403
 
         the user is recognized but has no valid permission
-
-# Group Server Time
 
 ## Server Time [/api/v2/server_time]
 
