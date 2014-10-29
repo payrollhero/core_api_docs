@@ -5,7 +5,12 @@ HOST: https://api.payrollhero.com
 
 # Group Authentication
 
-Authentication to the Core API is done through Payrollhero Auth
+Authentication to the Core API is done through Payrollhero Auth.
+
+Retrieving a token from Payrollhero Auth.
+
+There are two ways of getting the token from Payrollhero Auth. One could iether use 3-legged OAuth
+authentication or 2-legged OAuth authentication.
 
 ## Token Based Authentication
 
@@ -25,6 +30,86 @@ OAUTH2 authentication process against https://auth.payrollhero.com.
     + oauth_nonce (string) ... Nonce used for this signature
     + oauth_signature_method (string) ... The oauth signature method used. Currently only supports 'rsa-sha256'.
     + oauth_timestamp (unix_timestamp) ... The timestamp for this request in seconds epoch.
+
+# Group 3-legged OAuth Authentication
+
+The 3-legged OAuth authentication works well with websites when the user could be redirected to Payrollhero
+Auth.
+
+The token could be retrieved by following these steps:
+
+  * Step 1: Redirect the user to https://auth.payrollhero.com/oauth/authorize
+  * Step 2: User authorizes the application
+  * Step 3: PayrollHero Auth redirects the user back to the application with the code
+  * Step 4: Application exchange the code for a token
+  * Step 5: Application uses the token to access the rest of the API
+
+Scope Values:
+  + read_account
+  + read_attendances
+  + read_backgrounds
+  + read_break_screens
+  + read_clockings
+  + read_photos
+  + read_device_pings
+  + read_employees
+  + read_logs
+  + read_schedules
+  + read_server_times
+  + read_worksites
+  + write_accounts
+  + write_attendances
+  + write_backgrounds
+  + write_break_screens
+  + write_clockings
+  + write_device_pings
+  + write_employees
+  + write_logs
+  + write_schedules
+  + write_server_times
+  + write_worksites
+
+
+## On Auth Endpoint [/oauth/authorize{?client_id,redirect_uri,response_type,scope,state}]
+
+### Authorize - Step 1 [GET]
+
++ Parameters
+    + client_id (required, string) ... Application's client ID obtained from PayrollHero.
+    + redirect_uri (required, string) ... Determines where the response is sent. The value must exactly match
+      what was registered with PayrollHero.
+    + response_type (required, string, `code`) ... should be `code`
+    + scope (required, string) ... Scopes that is needed by the Application. See above for the list of
+      possible values.
+    + state (required, string) ... parameter sent back to the redirect URI
+
++ Response 200 (text/html)
+
+## On Applicatoin Endpoint [/auth/payroll_hero/callback{?code,scope,state}]
+
+### Code - Step 3 [GET]
+
++ Parameters
+    + code (required, string) ... The code that could be exchanged for a token.
+    + scope (optional, string) ... The scope that was authorized by the user.
+    + state (optional, string) ... The verbatim state that was sent on step 1.
+
++ Response 302 (text/html)
+
+## On Auth Endpoint [/oauth/token{?client_id,client_secret,code,grant_type,redirect_uri,type}]
+
+### Code-Token Exchange - Step 4 [POST]
+
++ Parameters
+    + client_id (required, string) ... Application's client ID obtained from PayrollHero.
+    + client_secret (required, string) ... Application's client secret set on PayrollHero.
+    + code (required, string) ... code from step 3
+    + redirect_uri (required, string) ... Determines where the response is sent. The value must exactly match
+      what was registered with PayrollHero.
+    + type (required, string, `exchange`) ... should be `exchange`
+
++ Response 200 (text/html)
+
 
 # Group Clocking Logic
 
