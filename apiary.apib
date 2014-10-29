@@ -21,16 +21,6 @@ OAUTH2 authentication process against https://auth.payrollhero.com.
 
     + token (string, optional) ... OAuth Token from auth.payrollhero.com
 
-## Signature Based Authentication
-
-#### Parameters
-
-    + oauth_signature (string, optional) ... Base64 encoded oauth signature string
-    + oauth_key_id (string) ... Key identifier for the public key for this signature string
-    + oauth_nonce (string) ... Nonce used for this signature
-    + oauth_signature_method (string) ... The oauth signature method used. Currently only supports 'rsa-sha256'.
-    + oauth_timestamp (unix_timestamp) ... The timestamp for this request in seconds epoch.
-
 # Group 3-legged OAuth Authentication
 
 The 3-legged OAuth authentication works well with websites when the user could be redirected to Payrollhero
