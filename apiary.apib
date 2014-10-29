@@ -3,8 +3,6 @@ HOST: https://api.payrollhero.com
 
 # PayrollHero Core API
 
-Testing 1.. 2.. 3.. 4..
-
 # Group Authentication
 
 Authentication to the Core API is done through Payrollhero Auth
@@ -146,14 +144,14 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
@@ -163,16 +161,30 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
 
 ## DaySchedules Collection [/api/v3/day_schedules{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,worksite_id,start_date,end_date,permissions,breaks}]
 
-section 1
-
 ### List all DaySchedules [GET]
 
 Returns a list of day schedules.
 
 #### Important Notes
 
-The permissions information is not included by default. To activate it pass `permissions=true`
+##### Permission information
+
+Keys: `in_early`, `in_late`, `out_early`, `out_late` are boolean, and denote the threshold permiossions
+for being able to cross that threshold.
+
+Keys: `earliest_in`, `earliest_out`, `latest_in`, `latest_out` are unix timestamps are they represent
+the threshold value for their corresponding check.
+
+All of these keys are optional, they will not show unless passing `permissions=true`
+
+##### Breaks
+
 The `breaks` key in the response is off by default. To activate it pass `breaks=true`
+
+##### Changer
+
+The changer information `changer_id`, `changer_photo`, `changed_at` can be nil, when its present it denotes
+information about who changed this schedule and a photo of them when they changed it.
 
 + Parameters
     + token (string, required) ... Authentication Token
@@ -198,7 +210,6 @@ The `breaks` key in the response is off by default. To activate it pass `breaks=
                     "worksite_id": 5,
                     "start_time": 1390840620,
                     "end_time": 1390876620,
-                    // breaks only show when `breaks` is true
                     "breaks": [
                       {
                         "kind": "unpaid_break",
@@ -206,7 +217,6 @@ The `breaks` key in the response is off by default. To activate it pass `breaks=
                         "end_time": 1390858620
                       }
                     ],
-                    // the below only show when `permissions` is true
                     "in_early": true,
                     "in_late": true,
                     "out_early": true,
@@ -230,24 +240,61 @@ The `breaks` key in the response is off by default. To activate it pass `breaks=
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
         the user is recognized but has no valid permission
 
+# Group Account
+
+## Account [/api/v2/account{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
+
+### Get Current Account [GET]
+
+Returns the current account the passed in token belongs to.
+
+The `active_employee_count` can be used to smartly set up paging for retrieving all the employees/schedules in the other apis.
+
++ Parameters
+    + token (string, required) ... Authentication Token
+
++ Response 200 (application/json)
+
+        {
+          "account": {
+            "id": 65,
+            "display_name": "PayrollHero.com Pte. Ltd.",
+            "active_employee_count": 7
+          }
+        }
+
++ Response 400
+
+        request parameters are not valid
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }
+
++ Response 403
+
+        the user is recognized but has no valid permission
+
+
 # Group Attendance
 
 ## AttendanceDays Collection [/api/v3/attendance_days{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,start_date,end_date,employee_id}]
-
-section 1
 
 ### List all Attendance Days [GET]
 
@@ -291,7 +338,7 @@ Returns a list of attendance days.
     + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
     + start_date (date[format="YYYY-MM-DD"], required) ... Specifies a start date to query schedules for.
     + end_date (date[format="YYYY-MM-DD"], required) ... Specifies an end date to query schedules for.
-    + employee_id (integer, optional) ... Employee ID to limit this query to 
+    + employee_id (integer, optional) ... Employee ID to limit this query to
 
 + Response 200 (application/json)
 
@@ -341,14 +388,14 @@ Returns a list of attendance days.
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
@@ -357,8 +404,6 @@ Returns a list of attendance days.
 # Group Backgrounds
 
 ## PhotoWall Backgrounds Collection [/api/v2/backgrounds{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
-
-section 1
 
 ### List all processed photo wall backgrounds [GET]
 
@@ -373,30 +418,30 @@ Any consumer of this endpoint is guaranteed to receive 3 different background im
 + Response 200 (application/json)
 
         {
-            backgrounds: {
-              horizontal: 'https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/121/images/original/team_clock_bg.jpg20140128-13912-17heex1?1390944942',
-              vertical: 'https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/122/images/original/team_clock_bg.jpg20140128-13912-1m68r5i?1390944969',
-            }
+          "backgrounds": {
+            "horizontal": "https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/121/images/original/team_clock_bg.jpg20140128-13912-17heex1?1390944942",
+            "vertical": "https://s3.amazonaws.com/files2.payrollhero.com/production/team_clock_background_resolutions/122/images/original/team_clock_bg.jpg20140128-13912-1m68r5i?1390944969"
+          }
         }
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
         the user is recognized but has no valid permission
-        
-## Worksites Collection [/api/v2/worksites{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
 
-section 1
+# Group Worksites
+
+## Worksites Collection [/api/v2/worksites{?token,page,per_page}]
 
 ### List all worksites [GET]
 
@@ -404,35 +449,51 @@ Returns a collection of the worksites for the given account.
 
 + Parameters
     + token (string, required) ... Authentication Token
+    + page = `1` (number, optional) ... Current page being requested
+    + per_page = `25` (number, optional) ... Number of items per page desired to be returned by the API
 
 + Response 200 (application/json)
 
         {
-            worksites: [
-              {
-                id: 1,
-                name: "Some Place",
-                address: "123 some place",
-                latitude: 134.2333,
-                longitude: 134.2333,
-                time_zone: "America/Vancouver",
-                proximity_radius: 200,
-                account_id: 1,
-              }
-            ]
+          "worksites": [
+            {
+              "id": 1,
+              "name": "Some Place",
+              "address": "123 some place",
+              "latitude": 134.2333,
+              "longitude": 134.2333,
+              "time_zone": "America/Vancouver",
+              "proximity_radius": 200,
+              "account_id": 1
+            }
+          ]
         }
 
 + Response 400
 
-        request parameters are not valid 
+        request parameters are not valid
 
 + Response 401 (application/json)
 
         {
           "error": "invalid_token",
           "error_description": "The token used is invalid."
-        }    
+        }
 
 + Response 403
 
         the user is recognized but has no valid permission
+
+# Group Server Time
+
+## Server Time [/api/v2/server_time]
+
+### Get Current Server Time [GET]
+
+Returns the server's current time as a unix timestamp.
+
++ Response 200 (application/json)
+
+        {
+          "server_time": 1394239827
+        }
