@@ -103,7 +103,7 @@ the ui should not allow them to clock in.
         X-App-Name: The current app's bundle identifier
         X-App-Version: Current application version
 
-## Employees Collection [/api/v3/employees{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,device_platform,version,app_name,connection_type,unique_identifier,attempt_number,page,per_page,with_subordinate_eids}]
+## Employees Collection [/api/v3/employees{?token,page,per_page,with_subordinate_eids}]
 
 ### List all Employees [GET]
 
@@ -204,7 +204,7 @@ Return the attributes of a single employee.
 
 # Group Schedules
 
-## DaySchedules Collection [/api/v3/day_schedules{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,worksite_id,start_date,end_date,permissions,breaks}]
+## DaySchedules Collection [/api/v3/day_schedules{?token,page,per_page,worksite_id,start_date,end_date,permissions,breaks}]
 
 ### List all DaySchedules [GET]
 
@@ -339,7 +339,7 @@ The `active_employee_count` can be used to smartly set up paging for retrieving 
 
 # Group Attendance
 
-## AttendanceDays Collection [/api/v3/attendance_days{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,start_date,end_date,employee_id}]
+## AttendanceDays Collection [/api/v3/attendance_days{?token,page,per_page,start_date,end_date,employee_id}]
 
 ### List all Attendance Days [GET]
 
@@ -448,7 +448,7 @@ Returns a list of attendance days.
 
 # Group Backgrounds
 
-## PhotoWall Backgrounds Collection [/api/v2/backgrounds{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
+## PhotoWall Backgrounds Collection [/api/v2/backgrounds{?token}]
 
 ### List all processed photo wall backgrounds [GET]
 
@@ -525,7 +525,6 @@ that these details only be fetched on initialization of a client application and
 
 
 # Group Worksites
-
 ## Worksites Collection [/api/v2/worksites{?token,page,per_page}]
 
 ### List all worksites [GET]
@@ -582,3 +581,74 @@ Returns the server's current time as a unix timestamp.
         {
           "server_time": 1394239827
         }
+
+# Group Time App
+
+Time is a separate service of PayrollHero. Requests against time should be made against https://time.payrollhero.com.
+
+The same authentication token is required to use these endpoint.
+
+## Clockings [/api/v2/clockings{?token}]
+
+**Clocking Kinds**
+
+ + `clock_in` ... the employee is clocking in
+ + `clock_out` ... the employee is clocking out
+ + `break_in` ... the employee is going on break
+ + `break_out` ... the employee is leaving break
+
+**Clocking Object Param**
+
+ + `employee_id` (number, required) ... The employee's id number as gotten from the employees endpoint
+ + `kind` (enum, required) ... What kind of clocking is this? (see above)
+ + `client_time` (number, required) ... Unix timestamp of when the employee performed this clocking
+ + `latitude` (float, optional) ... Latitude where this clocking happened
+ + `longitude` (float, optional) ... Longitude where this clocking happened
+ + `worksite_id` (number, optional) ... the id of the worksite this clocking should be tagged with
+ + `reason` (text, optional) ... a reason the employee entered as to why they were early/late etc
+ + `photo` (file or url, optional) ... a multi part file attachment or a url to an image with the employee's selfie (this one should be clear of any props)
+ + `propped_photo` (file or url, optional) ... a multi part file attachment or a url to an image with the employee's selfie including props, only include if using props
+
+### Create Clocking [POST]
+
+** Scope Required: ** `write_clockings`
+
+This endpoint will accept duplicated clockings, but it will return a status of `created` or `duplicate` depending
+if a duplicate is detected. (see the two sample responses)
+
++ Parameters
+  + token (string, required) ... Authentication Token
+  + clocking (object) ... The clocking data object, see above for details
+
++ Request (application/json)
+
+        {
+          "clocking": {
+            "employee_id": "1",
+            "kind": "clock_in",
+            "client_time": "1395106884",
+            "latitude": "-98.1234",
+            "longitude": "165.4321",
+            "ip_address": "174.7.251.60",
+            "worksite_id": "100"
+          }
+        }
+
++ Response 200 (application/json)
+
+        {
+          "clocking": {
+            "id": 123
+          },
+          "status": "duplicate"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "clocking": {
+            "id": 123
+          },
+          "status": "created"
+        }
+
