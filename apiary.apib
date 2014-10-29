@@ -441,9 +441,7 @@ Any consumer of this endpoint is guaranteed to receive 3 different background im
 
 # Group Worksites
 
-## Worksites Collection [/api/v2/worksites{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
-
-section 1
+## Worksites Collection [/api/v2/worksites{?token,page,per_page}]
 
 ### List all worksites [GET]
 
@@ -451,22 +449,24 @@ Returns a collection of the worksites for the given account.
 
 + Parameters
     + token (string, required) ... Authentication Token
+    + page = `1` (number, optional) ... Current page being requested
+    + per_page = `25` (number, optional) ... Number of items per page desired to be returned by the API
 
 + Response 200 (application/json)
 
         {
-            worksites: [
-              {
-                id: 1,
-                name: "Some Place",
-                address: "123 some place",
-                latitude: 134.2333,
-                longitude: 134.2333,
-                time_zone: "America/Vancouver",
-                proximity_radius: 200,
-                account_id: 1,
-              }
-            ]
+          "worksites": [
+            {
+              "id": 1,
+              "name": "Some Place",
+              "address": "123 some place",
+              "latitude": 134.2333,
+              "longitude": 134.2333,
+              "time_zone": "America/Vancouver",
+              "proximity_radius": 200,
+              "account_id": 1
+            }
+          ]
         }
 
 + Response 400
