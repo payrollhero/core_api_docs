@@ -253,6 +253,45 @@ information about who changed this schedule and a photo of them when they change
 
         the user is recognized but has no valid permission
 
+# Group Account
+
+## Account [/api/v2/account{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp}]
+
+### Get Current Account [GET]
+
+Returns the current account the passed in token belongs to.
+
+The `active_employee_count` can be used to smartly set up paging for retrieving all the employees/schedules in the other apis.
+
++ Parameters
+    + token (string, required) ... Authentication Token
+
++ Response 200 (application/json)
+
+        {
+          "account": {
+            "id": 65,
+            "display_name": "PayrollHero.com Pte. Ltd.",
+            "active_employee_count": 7
+          }
+        }
+
++ Response 400
+
+        request parameters are not valid
+
++ Response 401 (application/json)
+
+        {
+          "error": "invalid_token",
+          "error_description": "The token used is invalid."
+        }
+
++ Response 403
+
+        the user is recognized but has no valid permission
+
+
 # Group Attendance
 
 ## AttendanceDays Collection [/api/v3/attendance_days{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,page,per_page,start_date,end_date,employee_id}]
