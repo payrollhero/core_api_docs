@@ -19,53 +19,80 @@ is needed. Please refer to it for more details.
 
 ## What is this section?
 
-This section is meant to document a bunch of logic around clocking. Specifically for custom Time Clock implementations.
+This section describes how to logically determine what to show a user when they are arriving at the clocking page.
+It assumes knowledge of the scheduling and attendance APIs.
 
 ## Summary
 
 The idea is as follows:
 
-There is 3 states a shift can be in: `open`, `closest` and `unscheduled`
+An employee has information about their schedules and attendance for a given day as presented by the 
+AttendanceDays and DaySchedules endpoint.  They may or may not have either for a given day.
 
-### But first .. 'likely' clock out time
+Any implementation must first 'pair' an employees schedules with their attendance information.  This is done
+by using the information about each shift from attendance and searching the scheduled shifts for that day
+for the closest match.  Once you have paired each piece of attendance with it's corresponding (or non-existent)
+schedule information you then can determine the state of each shift.
 
-Is a concept of what is the employee's likely clock out time.
+Paired Shifts may be in one of three states.  `available`, `open`, or `closed`.
 
-In the case when the employee has a schedule, it will be their actual scheduled clock out time.
+### Available
+This represents a shift which an employee has not clocked into.
 
-In the case when they do not, it will be the time they clocked out plus their usual shift length (8 hours normally)
+The PairedShift:
++ has attendance that states not currently clocked in which corresponds with attendance state `not_clocked_in`.
++ has a schedule but no attendance attached to it.
 
 ### Open
+This is a shift which the employee has not clocked out of.  They may be on break, or it may be a previous shift
+they have forgotten to clock out of.
 
-If an employee is:
-+ currently already clocked in
-+ not clocked out
-+ can be on break or not
-+ not later than 10 hours past their likely clock out time
-+ not outside of their early/late thresholds for clocking out (separate section will explain thresholds)
+The PairedShift:
++ has attendance with states in `missing_clock_out`, or `on_break`.
++ note that a shift may be open with no schedule.  This is a an 'unscheduled' shift.
 
-### Closest
+### Closed
+This represents a schedule which has been clocked in and out of.  The employee has completed this shift.
 
-If an employee is:
-+ not currently clocked in
-+ they are no more than 10 hours away from the start of their shift (early or late)
-+ not outside their early/late in thresholds
+The PairedShift:
++ has attendance with state `clocked_out`
++ there may be a schedule or not.
 
-### Unscheduled
+### Finding a shift for an employee
 
-If an employee is:
-+ allowed to clock unscheduled
+Employees are allowed to clock in or out of a shift within a 10 hour window from the current time.
+When searching for the PairedShift for an employee you must search in order...
++ Search within 10 hours for any `Open` shift.  Where the 'likely clock out time` is used as the distance from now.
++ Search within 10 hours for any `Available` shift if there are no Open shifts within 10 hours.  Here the 'likely clock in time' is used as the distance metric.
+
+If an `Open` shift is found, then UI is presented to the user to allow them to either clock out or go on break for that shift.
+If no `Open` shift is found but an `Available` shift is found then present the user with UI to clock into that Available shift.
+If no `Open` or `Available` shift is found within 10 hours then they employee is considered `unscheduled`
+
+### 'likely' clock out/in time
+
+For any given PairedShift there is a likely time for clock in, and a likely time that the employee will clock out.
+
+If the shift is scheduled, then these are the scheduled times for clock in and out respectively.
+
+If the shift is not scheduled, then the likely clock in time is the time they clocked in and the likely clock out time is the time they clocked in plus 8 hours.
+
+### Unscheduled State
+
+If neither an open or available shift is found for an employee within the time window he/she is considered unscheduled.  When unscheduled the employee may
+clock in if the permissions bit on their employee information 'can_clock_in_unscheduled' is set.  If this is set then they may clock in with no schedule.
 
 ### Thresholds
 
-There is thresholds for `clocking in` and `clocking out`. And there is separate variants for being `early` or `late` for each.
+Attached to a schedule there is information about 'thresholds'.  These appear as additional items attached to the shift which say 'earliest_in', 'earliest_out',
+'latest_in', and 'latest_out'.  These specify times after or before which an employee may clock in.
 
 There is also a boolean flag if an employee is allowed to cross each of there thresholds.
 
 The threshold check is meant to allow fine tuned control of when an employee sees themselves on the Time Clock.
 
 This way if an employee is early by 30 minutes, and their `early in` threshold is 15 minutes, and they're not allowed to cross it
-the ui should not allow them to clock in.
+the ui should not allow them to clock in.  If they are outside of these boundaries the UI should inform them "You are too early/late to clock in/out".
 
 # Group Common Parameters / Headers
 
