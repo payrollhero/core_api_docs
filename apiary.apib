@@ -596,7 +596,7 @@ Returns the server's current time as a unix timestamp.
           "server_time": 1394239827
         }
 
-## Schedule Events BETA [/api/v4/schedule_events]
+## Schedule Events BETA [/api/v4/schedule_events{?token,time_zone,start_time,end_time,start_date,end_date,employee_ids,worksite_ids,excluded_worksite_ids}]
 
 + Model (application/json)
 
@@ -699,6 +699,7 @@ __Scope Required:__ read_schedule_events
 
 + Parameters
 
+    + token (string, required) ... Authentication Token
     + time_zone (string) ... Time Zone to use to perform the search
     + start_time (optional, string) ... Either specify the 'time' or 'date' pair of period params
     + end_time (optional, string) ... Either specify the 'time' or 'date' pair of period params
@@ -708,6 +709,6 @@ __Scope Required:__ read_schedule_events
     + worksite_ids (optional, String (CSV of Numbers)) ... Worksites to find (eg: "1,2,3")
     + excluded_worksite_ids (optional, String (CSV of Numbers)) ... Worksites to exclude (eg: "4,5,6")
 
-+ Response 200 (application/json)
++ Response 200
 
     [Schedule Events BETA][]
