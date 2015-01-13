@@ -595,3 +595,119 @@ Returns the server's current time as a unix timestamp.
         {
           "server_time": 1394239827
         }
+
+## Schedule Events BETA [/api/v4/schedule_events]
+
++ Model (application/json)
+
+    + Body
+
+            {
+                "schedule_events": {
+                    "id": 123,
+                    "kind": "single_shift",
+        
+                    "employee_id": 7, # can be nil for global account events
+                
+                    # applies to all kinds
+                    "is_rest_day": true
+        
+                    # applies only to shift type events
+                    "shift_start_time": "2012-04-23T18:25:43.511Z",
+                    "shift_end_time": "2012-04-23T22:25:43.511Z"
+                    "shift_time_zone": "America/Vancouver", # read only from worksite
+                    "shift_worksite_id": 7, # required
+                    "shift_breaks": [
+                        {
+                            "start_time": "2012-04-23T18:25:43.511Z"
+                            "end_time": "2012-04-23T18:25:43.511Z"
+                            "kind": "unpaid" # or "paid"
+                        }
+                    ]
+                
+                    # applies only to whole day events
+                    "day_event_name": "Holiday"
+                    "day_event_date": "2014-12-12"
+        
+                    # recurrence can be 3 types
+                    
+                    # Weekly recurrence example
+                    "recurrence_info": {
+                        "type": "week",
+                        "count": 1,
+                        "on_monday": true
+                        "on_tuesday": false
+                        "on_wednesday": true
+                        "on_thursday": false
+                        "on_friday": false
+                        "on_saturday": false
+                        "on_sunday": false
+                        "end_date": "2015-01-01"
+                        
+                        "exceptions": [
+                            "2014-01-01",
+                            "2014-01-02"
+                        ]
+                    }
+                    
+                    # Monthly Recurrence Info
+                    "recurrence_info": {
+                        "type": "month",
+                        "count": 1,
+                        "end_date": "2015-01-01"
+                        
+                        "exceptions": [
+                            "2014-01-01",
+                            "2014-01-02"
+                        ]
+                    }
+                    
+                    # No Recurrence Example
+                    "recurrence_info": {
+                        "type": "none",
+                    }
+                }        
+            }
+
+### Search Schedule Events [GET]
+
+__Scope Required:__ read_schedule_events
+
+
+#### Event Kinds
+
+##### Whole Day Events
+
+|Kind          |Description|
+|--------------|---|
+|paid_day_off  |Mark this entire date as a paid day off|
+|unpaid_day_off|Mark this entire date as an unpaid day off|
+|holiday       |Mark this entire date as a Holiday|
+|event         |An Event to this date, doesn't affect scheduling|
+|note          |A note (doesn't effect schedyling)|
+
+##### Shift Events
+
+|Kind              |Description|
+|------------------|-----------|
+|recurring_schedule|Regular recurring shift|
+|single_shift      |Regular non recurring shift|
+|paid_shift_off    |Non Working shift that is Paid|
+|unpaid_shift_off  |Non Working shift that is Unpaid|
+|work_this_holiday |Working Shift on a Holiday|
+
+
++ Parameters
+
+    + time_zone (string) ... Time Zone to use to perform the search
+    + start_time (optional, string) ... Either specify the 'time' or 'date' pair of period params
+    + end_time (optional, string) ... Either specify the 'time' or 'date' pair of period params
+    + start_date (optional, string) ... Either specify the 'time' or 'date' pair of period params
+    + end_date (optional, string) ... Either specify the 'time' or 'date' pair of period params ... Either specify the 'time' or 'date' pair of period params
+    + employee_ids (optional, String (CSV of Numbers)) ... Employee IDs to find (eg "1,2,3")
+    + worksite_ids (optional, String (CSV of Numbers)) ... Worksites to find (eg: "1,2,3")
+    + excluded_worksite_ids (optional, String (CSV of Numbers)) ... Worksites to exclude (eg: "4,5,6")
+
++ Response 200 (application/json)
+
+    [Schedule Events BETA][]
