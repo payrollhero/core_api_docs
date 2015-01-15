@@ -596,7 +596,7 @@ Returns the server's current time as a unix timestamp.
           "server_time": 1394239827
         }
 
-## Schedule Events BETA [/api/v4/schedule_events{?token,time_zone,start_time,end_time,start_date,end_date,employee_ids,worksite_ids,excluded_worksite_ids}]
+## Schedule Events BETA [/api/v4/schedule_events{?token,time_zone,start_time,end_time,start_date,end_date,employee_ids,worksite_ids,excluded_worksite_ids,page,per_page}]
 
 + Model (application/json)
 
@@ -666,7 +666,12 @@ Returns the server's current time as a unix timestamp.
                     "recurrence_info": {
                         "type": "none",
                     }
-                }        
+                },
+                "pagination": {
+                    "page": 2,
+                    "per_page": 10,
+                    "total": 15
+                }
             }
 
 ### Search Schedule Events [GET]
@@ -708,6 +713,8 @@ __Scope Required:__ read_schedule_events
     + employee_ids (optional, String (CSV of Numbers)) ... Employee IDs to find (eg "1,2,3")
     + worksite_ids (optional, String (CSV of Numbers)) ... Worksites to find (eg: "1,2,3")
     + excluded_worksite_ids (optional, String (CSV of Numbers)) ... Worksites to exclude (eg: "4,5,6")
+    + page (optional, Number) ... default 1, which page of the result you're requesting
+    + per_page (optional, Number) ... default (and max) 1000, how many items to return per page
 
 + Response 200
 
