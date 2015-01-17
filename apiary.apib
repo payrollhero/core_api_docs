@@ -596,88 +596,11 @@ Returns the server's current time as a unix timestamp.
           "server_time": 1394239827
         }
 
-## Schedule Events BETA [/api/v4/schedule_events{?token,shared_events,time_zone,start_time,end_time,start_date,end_date,employee_ids,worksite_ids,excluded_worksite_ids,page,per_page}]
-
-+ Model (application/json)
-
-    + Body
-
-            {
-                "schedule_events": {
-                    "id": 123,
-                    "kind": "single_shift",
-
-                    "employee_id": 7, # can be nil for global account events
-                
-                    # applies to all kinds
-                    "is_rest_day": true
-        
-                    # applies only to shift type events
-                    "shift_start_time": "2012-04-23T18:25:43.511Z",
-                    "shift_end_time": "2012-04-23T22:25:43.511Z"
-                    "shift_time_zone": "America/Vancouver", # read only from worksite
-                    "shift_worksite_id": 7, # required
-                    "shift_breaks": [
-                        {
-                            "start_time": "2012-04-23T18:25:43.511Z"
-                            "end_time": "2012-04-23T18:25:43.511Z"
-                            "kind": "unpaid" # or "paid"
-                        }
-                    ]
-                
-                    # applies only to whole day events
-                    "day_event_name": "Holiday"
-                    "day_event_date": "2014-12-12"
-        
-                    # recurrence can be 3 types
-                    
-                    # Weekly recurrence example
-                    "recurrence_info": {
-                        "type": "week",
-                        "count": 1,
-                        "on_monday": true
-                        "on_tuesday": false
-                        "on_wednesday": true
-                        "on_thursday": false
-                        "on_friday": false
-                        "on_saturday": false
-                        "on_sunday": false
-                        "end_time": "2012-04-23T18:25:43.511Z"
-                        
-                        "exceptions": [
-                            "2014-01-01",
-                            "2014-01-02"
-                        ]
-                    }
-                    
-                    # Monthly Recurrence Info
-                    "recurrence_info": {
-                        "type": "month",
-                        "count": 1,
-                        "end_time": "2012-04-23T18:25:43.511Z"
-                        
-                        "exceptions": [
-                            "2014-01-01",
-                            "2014-01-02"
-                        ]
-                    }
-                    
-                    # No Recurrence Example
-                    "recurrence_info": {
-                        "type": "none",
-                    }
-                },
-                "pagination": {
-                    "page": 2,
-                    "per_page": 10,
-                    "total": 15
-                }
-            }
+## Schedule Events Collection BETA [/api/v4/schedule_events{?token,shared_events,time_zone,start_time,end_time,start_date,end_date,employee_ids,worksite_ids,excluded_worksite_ids,page,per_page}]
 
 ### Search Schedule Events [GET]
 
-__Scope Required:__ read_schedule_events
-
+__Scope Required:__ read_schedules
 
 #### Event Kinds
 
@@ -719,4 +642,179 @@ __Scope Required:__ read_schedule_events
 
 + Response 200
 
-    [Schedule Events BETA][]
+        {
+            "schedule_events": {
+                "id": 123,
+                "kind": "single_shift",
+
+                "employee_id": 7, # can be nil for global account events
+            
+                # applies to all kinds
+                "is_rest_day": true
+    
+                # applies only to shift type events
+                "shift_start_time": "2012-04-23T18:25:43.511Z",
+                "shift_end_time": "2012-04-23T22:25:43.511Z"
+                "shift_time_zone": "America/Vancouver", # read only from worksite
+                "shift_worksite_id": 7, # required
+                "shift_breaks": [
+                    {
+                        "start_time": "2012-04-23T18:25:43.511Z"
+                        "end_time": "2012-04-23T18:25:43.511Z"
+                        "kind": "unpaid" # or "paid"
+                    }
+                ]
+            
+                # applies only to whole day events
+                "day_event_name": "Holiday"
+                "day_event_date": "2014-12-12"
+    
+                # recurrence can be 3 types
+                
+                # Weekly recurrence example
+                "recurrence_info": {
+                    "type": "week",
+                    "count": 1,
+                    "on_monday": true
+                    "on_tuesday": false
+                    "on_wednesday": true
+                    "on_thursday": false
+                    "on_friday": false
+                    "on_saturday": false
+                    "on_sunday": false
+                    "end_time": "2012-04-23T18:25:43.511Z"
+                    
+                    "exceptions": [
+                        "2014-01-01",
+                        "2014-01-02"
+                    ]
+                }
+                
+                # Monthly Recurrence Info
+                "recurrence_info": {
+                    "type": "month",
+                    "count": 1,
+                    "end_time": "2012-04-23T18:25:43.511Z"
+                    
+                    "exceptions": [
+                        "2014-01-01",
+                        "2014-01-02"
+                    ]
+                }
+                
+                # No Recurrence Example
+                "recurrence_info": {
+                    "type": "none",
+                }
+            },
+            "pagination": {
+                "page": 2,
+                "per_page": 10,
+                "total": 15
+            }
+        }
+
+## Schedule Event BETA [/api/v4/schedule_events/{id}?{token}]
+
++ Model (application/javascript)
+
+    + Body
+
+            {
+                "id": 123,
+                "kind": "single_shift",
+
+                "employee_id": 7, # can be nil for global account events
+            
+                # applies to all kinds
+                "is_rest_day": true
+    
+                # applies only to shift type events
+                "shift_start_time": "2012-04-23T18:25:43.511Z",
+                "shift_end_time": "2012-04-23T22:25:43.511Z"
+                "shift_time_zone": "America/Vancouver", # read only from worksite
+                "shift_worksite_id": 7, # required
+                "shift_breaks": [
+                    {
+                        "start_time": "2012-04-23T18:25:43.511Z"
+                        "end_time": "2012-04-23T18:25:43.511Z"
+                        "kind": "unpaid" # or "paid"
+                    }
+                ]
+            
+                # applies only to whole day events
+                "day_event_name": "Holiday"
+                "day_event_date": "2014-12-12"
+    
+                # recurrence can be 3 types
+                
+                # Weekly recurrence example
+                "recurrence_info": {
+                    "type": "week",
+                    "count": 1,
+                    "on_monday": true
+                    "on_tuesday": false
+                    "on_wednesday": true
+                    "on_thursday": false
+                    "on_friday": false
+                    "on_saturday": false
+                    "on_sunday": false
+                    "end_time": "2012-04-23T18:25:43.511Z"
+                    
+                    "exceptions": [
+                        "2014-01-01",
+                        "2014-01-02"
+                    ]
+                }
+                
+                # Monthly Recurrence Info
+                "recurrence_info": {
+                    "type": "month",
+                    "count": 1,
+                    "end_time": "2012-04-23T18:25:43.511Z"
+                    
+                    "exceptions": [
+                        "2014-01-01",
+                        "2014-01-02"
+                    ]
+                }
+                
+                # No Recurrence Example
+                "recurrence_info": {
+                    "type": "none",
+                }
+            }
+
+### Delete Event [DELETE]
+
+__Scope Required:__ write_schedules
+
++ Parameters
+
+    + token (string, required) ... Authentication Token
+    + id (string, required) ... The ID of the Event
+
++ Response 204
+
+
+### Create Event [POST]
+
+__Scope Required:__ write_schedules
+
+The new object should be specified in the post body either as a JSON object or
+as CGI arguments.
+
+The post body should be an object with a single key: 'schedule_event'
+
+This key's value should be the new schedule event.
+
+Responds with the created schedule's info
+
++ Parameters
+
+    + token (string, required) ... Authentication Token
+    + schedule_event (Hash/JSON, required) ... (in post body) the entire new schedule object to create
+
++ Response 201
+
+  [Schedule Event BETA][]
