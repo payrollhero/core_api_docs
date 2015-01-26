@@ -714,6 +714,59 @@ __Scope Required:__ read_schedules
             }
         }
 
+### Create Event [POST]
+
+__Scope Required:__ write_schedules
+
+The new object should be specified in the post body either as a JSON object or
+as CGI arguments.
+
+The post body should be an object with a single key: 'schedule_event'
+
+This key's value should be the new schedule event.
+
+(Recurrence and breaks can be as complicated as needed see the search example for a full version)
+
+Responds with the created schedule's info
+
++ Parameters
+
+    + token (string, required) ... Authentication Token
+    + schedule_event (Hash/JSON, required) ... (in post body) the entire new schedule object to create
+
++ Request (application/json)
+
+        {
+            "schedule_event": {
+                "kind": "single_shift",
+
+                "employee_id": 7, # can be nil for global account events
+            
+                # applies to all kinds
+                "is_rest_day": true
+    
+                # applies only to shift type events
+                "shift_start_time": "2012-04-23T18:25:43.511Z",
+                "shift_end_time": "2012-04-23T22:25:43.511Z"
+                "shift_worksite_id": 7, # required
+                "shift_breaks": []
+            
+                # applies only to whole day events
+                "day_event_name": "Holiday"
+                "day_event_date": "2014-12-12"
+                "day_event_day_type_id": 7,
+
+                "recurrence_info": {
+                    "type": "none",
+                }
+
+            }
+        }
+
++ Response 201
+
+  [Schedule Event BETA][]
+
 ## Schedule Event BETA [/api/v4/schedule_events/{id}?{token}]
 
 + Model (application/javascript)
@@ -797,56 +850,27 @@ __Scope Required:__ write_schedules
 
 + Response 204
 
-
-### Create Event [POST]
+### Update Event [PUT]
 
 __Scope Required:__ write_schedules
 
-The new object should be specified in the post body either as a JSON object or
+The updated object data should be specified in the post body either as a JSON object or
 as CGI arguments.
 
 The post body should be an object with a single key: 'schedule_event'
 
-This key's value should be the new schedule event.
+This key's value should be the updated schedule event.
 
 (Recurrence and breaks can be as complicated as needed see the search example for a full version)
 
-Responds with the created schedule's info
+Responds with the updated schedule's info
 
 + Parameters
 
     + token (string, required) ... Authentication Token
+    + id (string, required) ... The ID of the Event
     + schedule_event (Hash/JSON, required) ... (in post body) the entire new schedule object to create
 
-+ Request (application/json)
++ Response 200
 
-        {
-            "schedule_event": {
-                "kind": "single_shift",
-
-                "employee_id": 7, # can be nil for global account events
-            
-                # applies to all kinds
-                "is_rest_day": true
-    
-                # applies only to shift type events
-                "shift_start_time": "2012-04-23T18:25:43.511Z",
-                "shift_end_time": "2012-04-23T22:25:43.511Z"
-                "shift_worksite_id": 7, # required
-                "shift_breaks": []
-            
-                # applies only to whole day events
-                "day_event_name": "Holiday"
-                "day_event_date": "2014-12-12"
-                "day_event_day_type_id": 7,
-
-                "recurrence_info": {
-                    "type": "none",
-                }
-
-            }
-        }
-
-+ Response 201
-
-  [Schedule Event BETA][]
+    [Schedule Event BETA][]
