@@ -850,27 +850,22 @@ __Scope Required:__ write_schedules
 
 + Response 204
 
-### Update Event [PUT]
+## Schedule Event Exceptions BETA [/api/v4/schedule_events/{schedule_event_id}/exceptions{?token,date}]
+
+### Add Event Exceptions [POST]
 
 __Scope Required:__ write_schedules
-
-The updated object data should be specified in the post body either as a JSON object or
-as CGI arguments.
-
-The post body should be an object with a single key: 'schedule_event'
-
-This key's value should be the updated schedule event.
-
-(Recurrence and breaks can be as complicated as needed see the search example for a full version)
-
-Responds with the updated schedule's info
 
 + Parameters
 
     + token (string, required) ... Authentication Token
-    + id (string, required) ... The ID of the Event
-    + schedule_event (Hash/JSON, required) ... (in post body) the entire new schedule object to create
+    + schedule_event_id (string, required) ... The ID of the Event
+    + date (string, required) ... (iso date) the date for which to add the exception for
 
-+ Response 200
++ Response 201
 
-    [Schedule Event BETA][]
+        {
+            "exceptions": [
+                "2010-01-01"
+            ]
+        }
