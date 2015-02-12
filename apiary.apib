@@ -873,3 +873,25 @@ __Scope Required:__ write_schedules
                 "2010-01-01"
             ]
         }
+        
+## Tags Collection BETA [/api/v4/tags{?token}]
+
+### List Tags [GET]
+
+__Scope Required:__ read_tags
+
++ Parameters
+
+    + token (string, required) ... Authentication Token
+
++ Response 200
+
+        {
+            tags: [
+                {
+                    "name": "Alpha Tag",
+                    "id": 1,
+                    "taggings_count": 123
+                }
+            ]
+        }
