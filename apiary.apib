@@ -10,6 +10,10 @@ Changelog entries older than 1 week should definitely be live in production.
 
 ## Feb 18, 2015
 
+* Added tag filter to the employees endpoint
+
+## Feb 18, 2015
+
 * Added primary_worksite_id filter to the employees endpoint
 
 ## Feb 16, 2015
@@ -135,7 +139,7 @@ the ui should not allow them to clock in.  If they are outside of these boundari
 
 Core is the main service of PayrollHero. Requests against time should be made against https://api.payrollhero.com.
 
-## Employees Collection [/api/v3/employees{?token,page,per_page,with_subordinate_eids,primary_worksite_id}]
+## Employees Collection [/api/v3/employees{?token,page,per_page,with_subordinate_eids,primary_worksite_id,tag}]
 
 ### List all Employees [GET]
 
@@ -151,7 +155,8 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
     + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
     + with_subordinate_eids = `false` (boolean, optional) ... Set to true to return an array of each employee's subordinates' account_specific_id
     + primary_worksite_id  (number, optional) ... Only show employees in this primary worksite
-
+    + tag (string, optional) ... Only show employees that have been tagged with this tag
+    
 + Response 200 (application/json)
 
         {
