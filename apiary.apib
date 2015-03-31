@@ -200,7 +200,7 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
 
         the user is recognized but has no valid permission
 
-## Employee Detail [/api/v3/employees/{id}{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,device_platform,version,app_name,connection_type,unique_identifier,attempt_number,page,per_page,with_subordinate_eids}]
+## Employee Detail [/api/v3/employees/{id}{?token,oauth_signature,oauth_key_id,oauth_nonce,oauth_signature_method,oauth_timestamp,device_platform,version,app_name,connection_type,unique_identifier,attempt_number,page,per_page,with_subordinate_eids,show_tags}]
 
 ### Show a single Employee [GET]
 
@@ -209,6 +209,7 @@ Return the attributes of a single employee.
 + Parameters
     + token (string, required) ... Authentication Token
     + id (number, required) ... ID of employee to be fetched
+    + show_tags = `false` (boolean, optional) .. show the public tags of this employee
 
 + Response 200 (application/json)
 
@@ -225,6 +226,7 @@ Return the attributes of a single employee.
              "avatar": {
                "profile": "https://s3.amazonaws.com/files2.payrollhero.com/production/employees/4111/avatars/profile/27665c39818fc4684334f5ce33a4a2f9?1351665729"
              },
+             "tags": ["foo","bar"],
              "date_of_birth": "1984-05-22",
              "employment_date" : "2009-04-01"
           }
