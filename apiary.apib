@@ -635,18 +635,15 @@ __Scope Required:__ read_schedules
 
 #### Event Kinds
 
-##### Whole Day Events
+##### Employee Specific Whole Day Events
 
 |Kind              |Description|
 |------------------|---|
 |paid_day_off      |Mark this entire date as a paid day off|
 |unpaid_day_off    |Mark this entire date as an unpaid day off|
-|holiday           |Mark this entire date as a Holiday|
-|event             |An Event to this date, doesn't affect scheduling|
-|note              |A note (doesn't effect schedyling)|
 |work_this_holiday |Working Shift on a Holiday|
 
-##### Shift Events
+##### Employee Specific Shift Events
 
 |Kind              |Description|
 |------------------|-----------|
@@ -654,6 +651,16 @@ __Scope Required:__ read_schedules
 |single_shift      |Regular non recurring shift|
 |paid_shift_off    |Non Working shift that is Paid|
 |unpaid_shift_off  |Non Working shift that is Unpaid|
+
+###### Shared Events
+Shared Events are account wide events not attached to an employee,
+these include holidays, events, and notes attached to the overall account.
+
+|Kind              |Description|
+|------------------|---|
+|holiday           |This date is a public holiday|
+|event             |An Event to this date, doesn't affect scheduling|
+|note              |A note (doesn't effect scheduling)|
 
 
 + Parameters
