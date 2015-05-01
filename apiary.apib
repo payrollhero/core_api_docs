@@ -888,7 +888,7 @@ __Scope Required:__ write_schedules
 
 + Response 204
 
-## Schedule Event Exceptions BETA [/api/v4/schedule_events/{schedule_event_id}/exceptions{?token,date}]
+## Schedule Event Exceptions BETA [/api/v4/schedule_events/{schedule_event_id}/exceptions/{id}{?token}]
 
 ### Add Event Exceptions [POST]
 
@@ -898,7 +898,7 @@ __Scope Required:__ write_schedules
 
     + token (string, required) ... Authentication Token
     + schedule_event_id (string, required) ... The ID of the Event
-    + date (string, required) ... (iso 8601 date 'YYYY-MM-DD') the date for which to add the exception for
+    + date (string, required) ... iso 8601 date 'YYYY-MM-DD'; the date for which to add the exception for
 
 + Response 201
 
@@ -907,6 +907,23 @@ __Scope Required:__ write_schedules
                 "2010-01-01"
             ]
         }
+
+### Delete Event Exceptions [DELETE]
+
+__Scope Required:__ write_schedules
+
++ Parameters
+
+    + token (string, required) ... Authentication Token
+    + id (string, required) ... iso 8601 date 'YYYY-MM-DD'; the date for which to remove the exception for
+
++ Response 200
+
+        {
+            "exceptions": [
+            ]
+        }
+
         
 ## Tags Collection BETA [/api/v4/tags{?token}]
 
