@@ -8,6 +8,12 @@ HOST: https://api.payrollhero.com
 This documentation can be at time ahead of the production api endpoints.
 Changelog entries older than 1 week should definitely be live in production.
 
+## May 6, 2015
+
+* Added `employee_number` field to the Employee Detail and List endpoints
+* Added optional query parameter `employee_number` to Employee List endpoint to allow searching by employee number
+* Added support for the boolean `show_tags` flag on the Employee List endpoint
+
 ## Feb 18, 2015
 
 * Added tag filter to the employees endpoint
@@ -139,7 +145,7 @@ the ui should not allow them to clock in.  If they are outside of these boundari
 
 Core is the main service of PayrollHero. Requests against time should be made against https://api.payrollhero.com.
 
-## Employees Collection [/api/v3/employees{?token,page,per_page,with_subordinate_eids,primary_worksite_id,tag}]
+## Employees Collection [/api/v3/employees{?token,page,per_page,with_subordinate_eids,primary_worksite_id,tag,show_tags,employee_number}]
 
 ### List all Employees [GET]
 
@@ -150,12 +156,14 @@ Returns a list of employees.
 The `subordinate_eids` key in the response is off by default. To activate it pass `with_subordinate_eids=true`
 
 + Parameters
-    + token (string, required) ... Authentication Token
-    + page = `1` (number, optional) ... Current page being requested
-    + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
-    + with_subordinate_eids = `false` (boolean, optional) ... Set to true to return an array of each employee's subordinates' account_specific_id
-    + primary_worksite_id  (number, optional) ... Only show employees in this primary worksite
-    + tag (string, optional) ... Only show employees that have been tagged with this tag
+  + token (string, required) ... Authentication Token
+  + page = `1` (number, optional) ... Current page being requested
+  + per_page = `25` (number, optional) ... Number of employees in a page desired to be returned by the API
+  + with_subordinate_eids = `false` (boolean, optional) ... Set to true to return an array of each employee's subordinates' account_specific_id
+  + primary_worksite_id  (number, optional) ... Only show employees in this primary worksite
+  + tag (string, optional) ... Only show employees that have been tagged with this tag
+  + show_tags = `false` (boolean, optional) .. show the public tags of this employee
+  + employee_number = null (string, optional) .. filter to employees matching given employee number exactly
     
 + Response 200 (application/json)
 
@@ -179,7 +187,9 @@ The `subordinate_eids` key in the response is off by default. To activate it pas
                 "59",
                 "97"
               ],
+              "tags": ["foo","bar"],
               "date_of_birth": "1984-05-22",
+              "employee_number": "a1234",
               "employment_date" : "2009-04-01"
             }
           ]
@@ -228,6 +238,7 @@ Return the attributes of a single employee.
              },
              "tags": ["foo","bar"],
              "date_of_birth": "1984-05-22",
+             "employee_number": "a1234",
              "employment_date" : "2009-04-01"
           }
         }
@@ -666,17 +677,17 @@ these include holidays, events, and notes attached to the overall account.
 + Parameters
 
     + token (string, required) ... Authentication Token
-    + shared_events (optional, Boolean) ... Include shared (account wide) events in the response, default: false
+    + shared_events = false (optional, boolean) ... Include shared (account wide) events in the response, default: false
     + time_zone (string) ... Time Zone to use to perform the search
     + start_time (optional, string) ... Either specify the 'time' or 'date' pair of period params
     + end_time (optional, string) ... Either specify the 'time' or 'date' pair of period params
     + start_date (optional, string) ... Either specify the 'time' or 'date' pair of period params
     + end_date (optional, string) ... Either specify the 'time' or 'date' pair of period params ... Either specify the 'time' or 'date' pair of period params
-    + employee_ids (optional, String (CSV of Numbers)) ... Employee IDs to find (eg "1,2,3"), default: none, will return no results
-    + worksite_ids (optional, String (CSV of Numbers)) ... Worksites to find (eg: "1,2,3")
+    + employee_ids = null (optional, String (CSV of Numbers)) ... Employee IDs to find (eg "1,2,3"), default: none, will return no results
+    + worksite_ids = null (optional, String (CSV of Numbers)) ... Worksites to find (eg: "1,2,3")
     + excluded_worksite_ids (optional, String (CSV of Numbers)) ... Worksites to exclude (eg: "4,5,6")
-    + page (optional, Number) ... default 1, which page of the result you're requesting
-    + per_page (optional, Number) ... default (and max) 1000, how many items to return per page
+    + page (optional, number) ... default 1, which page of the result you're requesting
+    + per_page = 1000 (number, optional) ... default (and max) 1000, how many items to return per page
 
 + Response 200
 
@@ -770,7 +781,7 @@ Responds with the created schedule's info
 + Parameters
 
     + token (string, required) ... Authentication Token
-    + schedule_event (Hash/JSON, required) ... (in post body) the entire new schedule object to create
+    + schedule_event (Hash/JSON, required) ... [in post body] the entire new schedule object to create
 
 + Request (application/json)
 
@@ -888,7 +899,7 @@ __Scope Required:__ write_schedules
 
 + Response 204
 
-## Schedule Event Exceptions BETA [/api/v4/schedule_events/{schedule_event_id}/exceptions/{id}{?token}]
+## Schedule Event Exceptions BETA [/api/v4/schedule_events/{schedule_event_id}/exceptions/{id}{?token,date}]
 
 ### Add Event Exceptions [POST]
 
