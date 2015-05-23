@@ -422,17 +422,21 @@ Returns a list of attendance days.
 
 #### Possible `status` values:
 
-+ `not_clocked_in`
-+ `clocked_in`
-+ `on_break`
-+ `clocked_out`
+| status           | Description                                                   |
+|:-----------------|:--------------------------------------------------------------|
+| `not_clocked_in` | employee is not clocked in                                    |
+| `clocked_in`     | employee is clocked in (not on break or clocked out)          |
+| `on_break`       | employee is on break (also is clocked in and not clocked out) |
+| `clocked_out`    | employee is clocked out (not on break and clocked in)         |
 
 #### Possible `kind` values:
 
-+ `clock_in`
-+ `clock_out`
-+ `break_in`
-+ `break_out`
+| kind        | Description                         |
+|:------------|:------------------------------------|
+| `clock_in`  | this is a record of clocking in     |
+| `clock_out` | this is a record of clocking out    |
+| `break_in`  | this is a record of going on break  |
+| `break_out` | this is a record of going off break |
 
 + Parameters
     + token (string, required) ... Authentication Token
