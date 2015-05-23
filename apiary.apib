@@ -402,21 +402,23 @@ Returns a list of attendance days.
 
 #### Possible `review_category` values:
 
-+ `misassociated`
-+ `missing_in`
-+ `duplicate_clock_in`
-+ `missing_out`
-+ `duplicate_clock_out`
-+ `in_late`
-+ `out_early`
-+ `in_early`
-+ `out_late`
-+ `overtime`
-+ `undertime`
-+ `perfect`
-+ `sent_to_payroll`
-+ `publishing_to_payroll`
-+ `published_to_payroll`
+| review_category         | Description                                                                                   |
+|:------------------------|:----------------------------------------------------------------------------------------------|
+| `misassociated`         | when the schedule has changed under this attendance item and requires a manager to approve it |
+| `missing_in`            | employee has not clocked in                                                                   |
+| `duplicate_clock_in`    | employee has clocked in twice (or more)                                                       |
+| `missing_out`           | employee has not clocked out                                                                  |
+| `duplicate_clock_out`   | employee has clocked out twice (or more)                                                      |
+| `in_late`               | employee has clocked in after the beginning of their shift                                    |
+| `out_early`             | employee has clocked out before the end of their shift                                        |
+| `in_early`              | employee has clocked in after the beginning of their shift                                    |
+| `out_late`              | employee has clocked out after the end of their shift                                         |
+| `overtime`              | employee has worked more hours than scheduled                                                 |
+| `undertime`             | employee has worked less hours than scheduled                                                 |
+| `perfect`               | employee's attendance has no remaining issues                                                 |
+| `sent_to_payroll`       | employee's attendance has been approved by a manager                                          |
+| `publishing_to_payroll` | employee's attendnace is in the process of being sent to payroll                              |
+| `published_to_payroll`  | employee's attendance is finalized and sent to payroll                                        |
 
 #### Possible `status` values:
 
