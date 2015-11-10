@@ -8,6 +8,11 @@ HOST: https://api.payrollhero.com
 This documentation can be at time ahead of the production api endpoints.
 Changelog entries older than 1 week should definitely be live in production.
 
+## Nov 10, 2015
+
+* Added missing `worksite_id` and `excluded_worksite_id` params to Attendance Days endpoint
+* Added missing `excluded_worksite_id` param to Day Schedules endpoint
+
 ## May 6, 2015
 
 * Added `employee_number` field to the Employee Detail and List endpoints
@@ -258,7 +263,7 @@ Return the attributes of a single employee.
 
         the user is recognized but has no valid permission
 
-## DaySchedules Collection [/api/v3/day_schedules{?token,page,per_page,worksite_id,start_date,end_date,permissions,breaks}]
+## DaySchedules Collection [/api/v3/day_schedules{?token,page,per_page,worksite_id,start_date,end_date,permissions,breaks,excluded_worksite_id}]
 
 ### List all DaySchedules [GET]
 
@@ -296,6 +301,7 @@ information about who changed this schedule and a photo of them when they change
     + permissions = `false` (boolean, optional) ... Whether to return permissions information with the schedule.
     + breaks = `false` (boolean, optional) ... Whether to return schedules breaks in the information.
     + worksite_id (integer, optional) ... Specifies a worksite_id to filter these schedules by.
+    + excluded_worksite_id (integer, optional) ... Worksites ids of schedules that should not appear in result
 
 + Response 200 (application/json)
 
@@ -392,7 +398,7 @@ The `active_employee_count` can be used to smartly set up paging for retrieving 
 
         the user is recognized but has no valid permission
 
-## AttendanceDays Collection [/api/v3/attendance_days{?token,page,per_page,start_date,end_date,employee_id}]
+## AttendanceDays Collection [/api/v3/attendance_days{?token,page,per_page,start_date,end_date,employee_id,excluded_worksite_id,worksite_id}]
 
 ### List all Attendance Days [GET]
 
@@ -452,6 +458,8 @@ Returns a list of attendance days.
     + start_date (date[format="YYYY-MM-DD"], required) ... Specifies a start date to query schedules for.
     + end_date (date[format="YYYY-MM-DD"], required) ... Specifies an end date to query schedules for.
     + employee_id (integer, optional) ... Employee ID to limit this query to
+    + worksite_id (integer, optional) ... ID/s of worksite to only fetch attendance days for (can be comma separated list)
+    + excluded_worksite_id (integer, optional) ... ID/s of worksite to NOT fetch attendance days for (can be comma separated list)
 
 + Response 200 (application/json)
 
