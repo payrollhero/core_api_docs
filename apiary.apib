@@ -8,6 +8,10 @@ HOST: https://api.payrollhero.com
 This documentation can be at time ahead of the production api endpoints.
 Changelog entries older than 1 week should definitely be live in production.
 
+## Nov 13, 2015
+
+* Added missing `employee_id` param to day schedules endpoint
+
 ## Nov 10, 2015
 
 * Added missing `worksite_id` and `excluded_worksite_id` params to Attendance Days endpoint
@@ -263,7 +267,7 @@ Return the attributes of a single employee.
 
         the user is recognized but has no valid permission
 
-## DaySchedules Collection [/api/v3/day_schedules{?token,page,per_page,worksite_id,start_date,end_date,permissions,breaks,excluded_worksite_id}]
+## DaySchedules Collection [/api/v3/day_schedules{?token,page,per_page,worksite_id,start_date,end_date,permissions,breaks,excluded_worksite_id,employee_id}]
 
 ### List all DaySchedules [GET]
 
@@ -302,6 +306,7 @@ information about who changed this schedule and a photo of them when they change
     + breaks = `false` (boolean, optional) ... Whether to return schedules breaks in the information.
     + worksite_id (integer, optional) ... Specifies a worksite_id to filter these schedules by.
     + excluded_worksite_id (integer, optional) ... Worksites ids of schedules that should not appear in result
+    + employee_id (integer, optional) ... single employee to filter the results to
 
 + Response 200 (application/json)
 
