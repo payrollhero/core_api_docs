@@ -8,6 +8,11 @@ HOST: https://api.payrollhero.com
 This documentation can be at time ahead of the production api endpoints.
 Changelog entries older than 1 week should definitely be live in production.
 
+## Dec 7, 2015
+
+* Added documentation for new V4 endpoints for employees, subordinates and superiors.
+* Move all V4 endpoints into a new heading "Core App BETA".
+
 ## Nov 13, 2015
 
 * Added missing `employee_id` param to day schedules endpoint
@@ -665,6 +670,210 @@ Returns the server's current time as a unix timestamp.
           "server_time": 1394239827
         }
 
+# Group Core App BETA
+
+## Employees Collection BETA [/api/v4/employees{?token,include,only,except,page,per_page}]
+
+### Get List of All Employees [GET]
+
+__Scope Required:__ read_employees
+
++ Parameters
+
+    + token (string, required) ... Authentication Token
+    + include (array, optional) ... Include named relationships and objects
+    + only (array, optional) ... Only include named attributes
+    + except (array, optional) ... Exclude named attributes
+    + page (optional, number) ... default 1, which page of the result you're requesting
+    + per_page = 1000 (number, optional) ... default (and max) 1000, how many items to return per page
+
++ Response 200
+
+        {
+            "employees": [
+                {
+                    "id": 100,
+                    "account_id": 1,
+                    "employment_date": "3000-01-01",
+                    "employee_number": "#0",
+                    "works_on_holidays": true,
+                    "firstname": "Turanga",
+                    "lastname": "Leela",
+                    "gender": "female",
+                    "timezone": "EST",
+                    "clock_on_non_work_days": true,
+                    "tags": [],
+                    "position_name": "Ship Captain"
+                },
+                {
+                    "id": 101,
+                    "account_id": 1,
+                    "employment_date": "3000-01-01",
+                    "employee_number": "#1",
+                    "works_on_holidays": false,
+                    "firstname": "Philip",
+                    "lastname": "Fry",
+                    "gender": "male",
+                    "timezone": "EST",
+                    "clock_on_non_work_days": false,
+                    "tags": [],
+                    "position_name": "Delivery Boy"
+                }
+            ],
+            "pagination": {
+                "total_records": 3,
+                "total_pages": 2,
+                "per_page": 2,
+                "page": 1
+            }
+        }
+
+## Employee Details BETA [/api/v4/employees/{id}{?token,include,only,except}]
+
+### Get Details About Specified Employee [GET]
+__Scope Required:__ read_employees
+
++ Parameters
+
+    + id (number, required) ... ID of employee to be fetched
+    + token (string, required) ... Authentication Token
+    + include (array, optional) ... Include named relationships and objects
+    + only (array, optional) ... Only include named attributes
+    + except (array, optional) ... Exclude named attributes
+
++ Response 200
+
+        {
+            "employee": {
+                "id": 100,
+                "account_id": 1,
+                "employment_date": "3000-01-01",
+                "employee_number": "#0",
+                "works_on_holidays": true,
+                "firstname": "Turanga",
+                "lastname": "Leela",
+                "gender": "female",
+                "timezone": "EST",
+                "clock_on_non_work_days": true,
+                "tags": [],
+                "position_name": "Ship Captain"
+            }
+        }
+
+## Subordinates Collection BETA [/api/v4/employees/{employee_id}/subordinates{?token,include,only,except,page,per_page}]
+
+### Get All Subordinates for Specified Employee [GET]
+
+__Scope Required:__ read_employees
+
++ Parameters
+
+    + employee_id (number, required) ... ID of employee to get subordinates for
+    + token (string, required) ... Authentication Token
+    + include (array, optional) ... Include named relationships and objects
+    + only (array, optional) ... Only include named attributes
+    + except (array, optional) ... Exclude named attributes
+    + page (optional, number) ... default 1, which page of the result you're requesting
+    + per_page = 1000 (number, optional) ... default (and max) 1000, how many items to return per page
+
++ Response 200
+
+        {
+            "employees": [
+                {
+                    "id": 100,
+                    "account_id": 1,
+                    "employment_date": "3000-01-01",
+                    "employee_number": "#0",
+                    "works_on_holidays": true,
+                    "firstname": "Turanga",
+                    "lastname": "Leela",
+                    "gender": "female",
+                    "timezone": "EST",
+                    "clock_on_non_work_days": true,
+                    "tags": [],
+                    "position_name": "Ship Captain"
+                },
+                {
+                    "id": 101,
+                    "account_id": 1,
+                    "employment_date": "3000-01-01",
+                    "employee_number": "#1",
+                    "works_on_holidays": false,
+                    "firstname": "Philip",
+                    "lastname": "Fry",
+                    "gender": "male",
+                    "timezone": "EST",
+                    "clock_on_non_work_days": false,
+                    "tags": [],
+                    "position_name": "Delivery Boy"
+                }
+            ],
+            "pagination": {
+                "total_records": 3,
+                "total_pages": 2,
+                "per_page": 2,
+                "page": 1
+            }
+        }
+
+## Superiors Collection BETA [/api/v4/employees/{employee_id}/superiors{?token,include,only,except,page,per_page}]
+
+### Get All Superiors for Specified Employee [GET]
+
+__Scope Required:__ read_employees
+
++ Parameters
+
+    + employee_id (number, required) ... ID of employee to get superiors for
+    + token (string, required) ... Authentication Token
+    + include (array, optional) ... Include named relationships and objects
+    + only (array, optional) ... Only include named attributes
+    + except (array, optional) ... Exclude named attributes
+    + page (optional, number) ... default 1, which page of the result you're requesting
+    + per_page = 1000 (number, optional) ... default (and max) 1000, how many items to return per page
+
++ Response 200
+
+        {
+            "employees": [
+                {
+                    "id": 100,
+                    "account_id": 1,
+                    "employment_date": "3000-01-01",
+                    "employee_number": "#0",
+                    "works_on_holidays": true,
+                    "firstname": "Turanga",
+                    "lastname": "Leela",
+                    "gender": "female",
+                    "timezone": "EST",
+                    "clock_on_non_work_days": true,
+                    "tags": [],
+                    "position_name": "Ship Captain"
+                },
+                {
+                    "id": 101,
+                    "account_id": 1,
+                    "employment_date": "3000-01-01",
+                    "employee_number": "#1",
+                    "works_on_holidays": false,
+                    "firstname": "Philip",
+                    "lastname": "Fry",
+                    "gender": "male",
+                    "timezone": "EST",
+                    "clock_on_non_work_days": false,
+                    "tags": [],
+                    "position_name": "Delivery Boy"
+                }
+            ],
+            "pagination": {
+                "total_records": 3,
+                "total_pages": 2,
+                "per_page": 2,
+                "page": 1
+            }
+        }
+        
 ## Schedule Events Collection BETA [/api/v4/schedule_events{?token,shared_events,time_zone,start_time,end_time,start_date,end_date,employee_ids,worksite_ids,excluded_worksite_ids,page,per_page}]
 
 ### Search Schedule Events [GET]
@@ -984,3 +1193,4 @@ __Scope Required:__ read_tags
                 }
             ]
         }
+
