@@ -7,6 +7,9 @@ HOST: https://api.payrollhero.com
 
 This documentation can be at time ahead of the production api endpoints.
 Changelog entries older than 1 week should definitely be live in production.
+## Dec 22, 2015
+
+* Change description of V4 superiors endpoint to specify that it only returns immediate superiors.
 
 ## Dec 7, 2015
 
@@ -819,7 +822,7 @@ __Scope Required:__ read_employees
 
 ## Superiors Collection BETA [/api/v4/employees/{employee_id}/superiors{?token,include,only,except,page,per_page}]
 
-### Get All Superiors for Specified Employee [GET]
+### Get All Immediate Superiors for Specified Employee [GET]
 
 __Scope Required:__ read_employees
 
