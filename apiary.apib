@@ -138,18 +138,9 @@ The threshold check is meant to allow fine tuned control of when an employee see
 This way if an employee is early by 30 minutes, and their `early in` threshold is 15 minutes, and they're not allowed to cross it
 the ui should not allow them to clock in.  If they are outside of these boundaries the UI should inform them "You are too early/late to clock in/out".
 
-# Group Common Parameters / Headers
+# Group Common Headers
 
-#### Statistical Parameters (Parameters used to track API usage.)
-
-        + device_platform (string) ... Current device platform (ie: iPhone4,1 , iPad3,2)
-        + version (string) ... Current application version
-        + app_name (string) ... The current app's bundle identifier (eg: com.Payrollhero.TeamClock)
-        + connection_type (string) ... How app is currently connect (ie: WiFi, 3G)
-        + unique_identifier (string) ... Device's uuid
-        + attempt_number (number) ... Number of times request has been retried
-
-#### Statistical Headers (can be used instead of the statistical parameters)
+#### Statistical Headers
 
         X-App-Platform: Current device platform (ie: iPhone4,1 , iPad3,2)
         X-App-Attempt-Number: Number of times request has been retried
