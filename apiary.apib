@@ -7,7 +7,10 @@ HOST: https://api.payrollhero.com
 
 This documentation can be at time ahead of the production api endpoints.
 Changelog entries older than 1 week should definitely be live in production.
-## Dec 22, 2015
+## February 12, 2016
+* Add documentation for V4 Singapore Contracts endpoint (api/v4/sg_contracts).
+
+## Dec 22, 2015jj
 
 * Change description of V4 superiors endpoint to specify that it only returns immediate superiors.
 
@@ -1165,6 +1168,32 @@ __Scope Required:__ write_schedules
             ]
         }
 
+## Sg Contracts [/api/v4/sg_contracts{?token,period_start,period_end}]
+
+### List SgContracts [GET]
+
+__Scope Required:__ read_sg_contracts
+
++ Parameters
+
+    + token (string, required) ... Authentication Token
+    + period_start (date[format="YYYY-MM-DD"], required) ... Specifies a start date to query schedules for
+    + period_end (date[format="YYYY-MM-DD"], required) ... Specifies an end date to query schedules for
+
++ Response 200
+        
+        {
+            sg_contracts: [
+                {
+                  "pay_mode": "monthly",
+                  "effective_from": "2010-01-01",
+                  "effective_until": null,
+                  "basic_monthly_pay": 3000,
+                  "average_weekly_workdays": 5
+                }
+            ]
+        }
+            
         
 ## Tags Collection BETA [/api/v4/tags{?token}]
 
@@ -1187,4 +1216,3 @@ __Scope Required:__ read_tags
                 }
             ]
         }
-
