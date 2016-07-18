@@ -86,7 +86,8 @@ Also when its re-generated due to schedule changes
  * `employee`: [Employee Object](#employee-object)
  * `shift`: [Shift Object](#shift-object)
 
-### `shift_starting_soon`
+
+### `shift_reminder`
 
 **Fired When**:
 
@@ -97,6 +98,7 @@ Also when its re-generated due to schedule changes
  * `account`: [Account Object](#account-object)
  * `employee`: [Employee Object](#employee-object)
  * `shift`: [Shift Object](#shift-object)
+
 
 ### `missed_clocking_in`
 
@@ -110,6 +112,7 @@ TBD
  * `employee`: [Employee Object](#employee-object)
  * `shift`: [Shift Object](#shift-object)
 
+
 ### `missed_clocking_out`
 
 **Fired When**:
@@ -122,33 +125,6 @@ TBD
  * `employee`: [Employee Object](#employee-object)
  * `shift`: [Shift Object](#shift-object)
 
-### `unscheduled_work`
-
-**Fired When**:
-
-Employee works an unscheduled shift
-
-Fired on Clock in and on Clock Out
-
-**Payload**:
-
- * `account`: [Account Object](#account-object)
- * `employee`: [Employee Object](#employee-object)
- * `clocking`: [Clocking Object](#clocking-object)
-
-### `offsite_work`
-
-**Fired When**:
-
-Employee works offsite
-
-Fired any time an offsite clock in or clock out happens
-
-**Payload**:
-
- * `account`: [Account Object](#account-object)
- * `employee`: [Employee Object](#employee-object)
- * `clocking`: [Clocking Object](#clocking-object)
 
 ### `clocking`
 
