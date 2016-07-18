@@ -50,12 +50,12 @@ These are:
 {
     "kind": "clock_in",
     "time": "2016-07-15T19:28:25+00:00",
-    "shift": {} || null, # Shift Object
-    "worksite": {} || null, # Worksite Object
+    "shift": {}, # Shift Object, can be null
+    "worksite": {}, # Worksite Object, can be null
     "offsite": false,
     "unscheduled": false,
-    "longitude": 1.23456 || null,
-    "latitude": 1.2345 || null,
+    "longitude": 1.23456, # can be null
+    "latitude": 1.2345, # can be null
     "device": "MyClock 3.2 - iPhone 4,2",
     "ip": "1.2.3.4"
 }
