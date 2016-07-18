@@ -52,6 +52,8 @@ These are:
     "time": "2016-07-15T19:28:25+00:00",
     "shift": {} || null, # Shift Object
     "worksite": {} || null, # Worksite Object
+    "offsite": false,
+    "unscheduled": false,
     "longitude": 1.23456 || null,
     "latitude": 1.2345 || null,
     "device": "MyClock 3.2 - iPhone 4,2",
