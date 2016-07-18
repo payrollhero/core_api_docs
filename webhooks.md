@@ -13,7 +13,7 @@ These are:
 ```json
 {
     "id": 1,
-    "account_id": 2,
+    "account": {}, # Account Object
     "phone_numbers": [
       {
         "label": "main",
@@ -50,6 +50,7 @@ These are:
 {
     "kind": "clock_in",
     "time": "2016-07-15T19:28:25+00:00",
+    "shift": {}, # Shift Object
     "worksite": {}, # Worksite Object
     "longitude": 1.23456,
     "latitude": 1.2345,
