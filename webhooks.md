@@ -29,10 +29,6 @@ These are:
 {
     "clock_in_time": "2016-07-15T19:28:25+00:00",
     "clock_out_time": "2016-07-15T19:28:25+00:00",
-    "earliest_clock_in_time": "2016-07-15T19:28:25+00:00",
-    "earliest_clock_out_time": "2016-07-15T19:28:25+00:00",
-    "latest_clock_in_time": "2016-07-15T19:28:25+00:00",
-    "latest_clock_out_time": "2016-07-15T19:28:25+00:00",
     "worksite": {} # Worksite Object
 }
 ```
