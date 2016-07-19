@@ -26,8 +26,8 @@ These are:
 ### Shift Object
 ```json
 {
-    "clock_in_time": "2016-07-15T19:28:25+00:00",
-    "clock_out_time": "2016-07-15T19:28:25+00:00",
+    "clock_in_time": "2016-07-15T19:28:25Z",
+    "clock_out_time": "2016-07-15T19:28:25Z",
     "worksite": {} # Worksite Object
 }
 ```
@@ -44,7 +44,7 @@ These are:
 ```json
 {
     "kind": "clock_in",
-    "time": "2016-07-15T19:28:25+00:00",
+    "time": "2016-07-15T19:28:25Z",
     "shift": {}, # Shift Object, can be null
     "offsite": false,
     "unscheduled": false,
