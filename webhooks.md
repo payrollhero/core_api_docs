@@ -95,7 +95,7 @@ Also when its re-generated due to schedule changes
  * `shift`: [Shift Object](#shift-object)
 
 
-### `missed_clocking_in`
+### `missed_clock_in`
 
 **Fired When**:
 
@@ -108,7 +108,7 @@ TBD
  * `shift`: [Shift Object](#shift-object)
 
 
-### `missed_clocking_out`
+### `missed_clock_out`
 
 **Fired When**:
 
