@@ -65,6 +65,16 @@ These are:
 }
 ```
 
+### Payroll Object
+
+```json
+{
+    "id": 1,
+    "period_start": "2010-01-01",
+    "period_end": '2010-01-15"
+}
+```
+
 ## Event Types
 
 ### `upcoming_shift`
@@ -132,3 +142,16 @@ Employee generates a clocking event of any kind (clock in/out break in/out)
  * `account`: [Account Object](#account-object)
  * `employee`: [Employee Object](#employee-object)
  * `clocking`: [Clocking Object](#clocking-object)
+
+### `payroll_published`
+
+**Fired When**:
+
+A payroll is published (ie finalizeed) in PayrollHero
+
+**Payload**:
+
+ * `account`: [Account Object](#account-object)
+ * `employee`: [Employee Object](#employee-object)
+ * `payroll`: [Payroll Object](#payroll-object)
+
